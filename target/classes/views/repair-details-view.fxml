@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="800" prefWidth="1100.0" styleClass="root"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="dealership.controllers.RepairDetailsController">
+
+    <!-- Back button (top-right like Figma) -->
+    <Button fx:id="backButton"
+            layoutX="1040" layoutY="25"
+            prefWidth="40" prefHeight="40"
+            text="‹"
+            onAction="#handleBack"
+            style="-fx-background-color: transparent;
+                   -fx-text-fill: #2563EB;
+                   -fx-font-size: 34px;
+                   -fx-font-weight: 700;
+                   -fx-padding: 0;" />
+
+    <Label layoutX="340" layoutY="40" text="Repair details"
+           style="-fx-font-size: 56px; -fx-font-weight: 800;" />
+
+    <VBox layoutX="140" layoutY="160" prefWidth="820" prefHeight="560" spacing="18"
+          style="-fx-background-color: white; -fx-border-color: #E6EAF0; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 30;">
+
+        <HBox spacing="40" style="-fx-alignment: center-left;">
+            <Label text="Repair information" style="-fx-font-size: 28px; -fx-font-weight: 700;" />
+
+            <HBox spacing="10" style="-fx-alignment: center-right;">
+                <Label text="Status:" style="-fx-font-size: 28px; -fx-font-weight: 700;" />
+                <Label fx:id="statusLabel" text="Assigned" style="-fx-font-size: 28px; -fx-font-weight: 500;" />
+            </HBox>
+        </HBox>
+
+        <TextArea fx:id="notesArea"
+                  prefHeight="330"
+                  wrapText="true"
+                  editable="false"
+                  style="-fx-border-color: #E6EAF0; -fx-font-size: 20px; -fx-text-fill: #6B7280;" />
+
+        <HBox spacing="40" style="-fx-alignment: center;">
+            <Button fx:id="startButton"
+                    text="Start repair"
+                    prefWidth="420"
+                    prefHeight="70"
+                    onAction="#handleStartRepair"
+                    style="-fx-background-color: white; -fx-border-color: black; -fx-font-size: 26px; -fx-font-weight: 600;" />
+
+            <Button fx:id="finishButton"
+                    text="Finish repair"
+                    prefWidth="420"
+                    prefHeight="70"
+                    onAction="#handleFinishRepair"
+                    style="-fx-background-color: white; -fx-border-color: black; -fx-font-size: 26px; -fx-font-weight: 600;" />
+        </HBox>
+
+        <Button fx:id="customerButton"
+                text="Customer details"
+                prefWidth="520"
+                prefHeight="70"
+                onAction="#handleCustomerDetails"
+                style="-fx-background-color: white; -fx-border-color: black; -fx-font-size: 28px; -fx-font-weight: 600; -fx-alignment: center;" />
+
+    </VBox>
+
+</AnchorPane>

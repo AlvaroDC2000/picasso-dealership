@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="800" prefWidth="1100.0" styleClass="root"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="dealership.controllers.BossRepairEditController">
+
+    <Button fx:id="backButton"
+            layoutX="1040" layoutY="25"
+            prefWidth="40" prefHeight="40"
+            text="‹"
+            onAction="#handleBack"
+            style="-fx-background-color: transparent;
+                   -fx-text-fill: #2563EB;
+                   -fx-font-size: 34px;
+                   -fx-font-weight: 700;
+                   -fx-padding: 0;" />
+
+    <Label layoutX="70" layoutY="45"
+           text="Edit repair"
+           style="-fx-font-size: 52px; -fx-font-weight: 800;" />
+
+    <VBox layoutX="140" layoutY="150"
+          prefWidth="820" prefHeight="600"
+          spacing="18"
+          style="-fx-background-color: white;
+                 -fx-border-color: #E6EAF0;
+                 -fx-border-radius: 8px;
+                 -fx-background-radius: 8px;
+                 -fx-padding: 30;">
+
+        <HBox spacing="16" style="-fx-alignment: center-left;">
+            <Label text="Repair ID:" style="-fx-font-size: 20px; -fx-font-weight: 700;" />
+            <Label fx:id="repairIdLabel" text="00000" style="-fx-font-size: 20px;" />
+        </HBox>
+
+        <HBox spacing="16" style="-fx-alignment: center-left;">
+            <Label text="Vehicle:" style="-fx-font-size: 20px; -fx-font-weight: 700;" />
+            <Label fx:id="vehicleLabel" text="-" style="-fx-font-size: 20px;" />
+        </HBox>
+
+        <HBox spacing="16" style="-fx-alignment: center-left;">
+            <Label text="Status:" style="-fx-font-size: 20px; -fx-font-weight: 700;" />
+            <Label fx:id="statusLabel" text="-" style="-fx-font-size: 20px;" />
+        </HBox>
+
+        <HBox spacing="16" style="-fx-alignment: center-left;">
+            <Label text="Assigned mechanic:" style="-fx-font-size: 20px; -fx-font-weight: 700;" />
+            <ComboBox fx:id="mechanicCombo" prefWidth="520" style="-fx-font-size: 18px;" />
+        </HBox>
+
+        <VBox spacing="10">
+            <Label text="Notes:" style="-fx-font-size: 20px; -fx-font-weight: 700;" />
+            <TextArea fx:id="notesArea"
+                      prefHeight="280"
+                      wrapText="true"
+                      style="-fx-border-color: #E6EAF0;
+                             -fx-font-size: 18px;
+                             -fx-text-fill: #6B7280;" />
+        </VBox>
+
+        <HBox spacing="40" style="-fx-alignment: center;">
+            <Button fx:id="unassignButton"
+                    text="Unassign"
+                    prefWidth="380"
+                    prefHeight="70"
+                    onAction="#handleUnassign"
+                    style="-fx-background-color: white;
+                           -fx-border-color: black;
+                           -fx-font-size: 26px;
+                           -fx-font-weight: 600;" />
+
+            <Button fx:id="saveButton"
+                    text="Save changes"
+                    prefWidth="380"
+                    prefHeight="70"
+                    onAction="#handleSave"
+                    style="-fx-background-color: white;
+                           -fx-border-color: black;
+                           -fx-font-size: 26px;
+                           -fx-font-weight: 600;" />
+        </HBox>
+
+        <Label fx:id="errorLabel" text=""
+               wrapText="true"
+               style="-fx-font-size: 16px; -fx-text-fill: #DC2626;" />
+
+    </VBox>
+
+</AnchorPane>

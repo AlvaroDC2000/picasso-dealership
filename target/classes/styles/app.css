@@ -1,0 +1,37 @@
+.root {
+    -fx-background-color: #F6F7FB;
+    -fx-font-family: "Inter", "Roboto", "System";
+}
+
+.label {
+    -fx-text-fill: #6B7280;
+    -fx-font-size: 15px;
+}
+
+.field {
+    -fx-background-color: white;
+    -fx-border-color: #E6EAF0;
+    -fx-border-width: 1px;
+    -fx-padding: 12 14 12 14;
+    -fx-font-size: 16px;
+}
+
+.field:focused {
+    -fx-border-color: #2563EB;
+}
+
+.btn-primary {
+    -fx-background-color: #2563EB;
+    -fx-text-fill: white;
+    -fx-font-size: 28px;
+    -fx-font-weight: 500;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #1D4ED8;
+}
+
+.error {
+    -fx-text-fill: #EF4444;
+    -fx-font-size: 13px;
+}

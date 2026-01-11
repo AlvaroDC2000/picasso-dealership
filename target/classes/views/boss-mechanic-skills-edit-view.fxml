@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="800" prefWidth="1100.0" styleClass="root"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="dealership.controllers.BossMechanicSkillsEditController">
+
+    <Button layoutX="1040" layoutY="25"
+            prefWidth="40" prefHeight="40"
+            text="‹"
+            onAction="#handleBack"
+            style="-fx-background-color: transparent;
+                   -fx-text-fill: #2563EB;
+                   -fx-font-size: 34px;
+                   -fx-font-weight: 700;
+                   -fx-padding: 0;" />
+
+    <Label layoutX="260" layoutY="60"
+           text="Edit mechanic’s skills"
+           style="-fx-font-size: 56px; -fx-font-weight: 900;" />
+
+    <VBox layoutX="140" layoutY="150"
+          prefWidth="820" prefHeight="600"
+          spacing="18"
+          style="-fx-background-color: white;
+                 -fx-border-color: #E6EAF0;
+                 -fx-border-radius: 8px;
+                 -fx-background-radius: 8px;
+                 -fx-padding: 40;">
+
+        <Label text="Skills"
+               style="-fx-font-size: 36px; -fx-font-weight: 800;" />
+
+        <TextArea fx:id="skillsArea"
+                  prefHeight="380"
+                  wrapText="true"
+                  promptText="Engine, brake"
+                  style="-fx-border-color: #E6EAF0;
+                         -fx-font-size: 22px;
+                         -fx-text-fill: #6B7280;" />
+
+        <Button text="Save changes"
+                prefWidth="420"
+                prefHeight="70"
+                onAction="#handleSave"
+                style="-fx-background-color: white;
+                       -fx-border-color: black;
+                       -fx-font-size: 26px;
+                       -fx-font-weight: 600;" />
+
+        <Label fx:id="errorLabel" text=""
+               wrapText="true"
+               style="-fx-font-size: 16px; -fx-text-fill: #DC2626;" />
+
+    </VBox>
+
+</AnchorPane>

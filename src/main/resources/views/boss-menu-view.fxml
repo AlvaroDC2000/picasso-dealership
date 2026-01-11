@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="800" prefWidth="1100.0" styleClass="root"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="dealership.controllers.BossMenuController">
+
+    <Label layoutX="70" layoutY="35"
+           text="Boss menu"
+           style="-fx-font-size: 42px; -fx-font-weight: 700;" />
+
+    <Button layoutX="70" layoutY="120"
+            prefWidth="960" prefHeight="165"
+            text="Register new repair"
+            onAction="#handleRegisterNewRepair"
+            style="-fx-background-color: white;
+                   -fx-border-color: #E6EAF0;
+                   -fx-background-radius: 10;
+                   -fx-border-radius: 10;
+                   -fx-font-size: 52px;
+                   -fx-font-weight: 800;" />
+
+    <Button layoutX="70" layoutY="315"
+            prefWidth="960" prefHeight="165"
+            text="View repairs"
+            onAction="#handleViewRepairs"
+            style="-fx-background-color: white;
+                   -fx-border-color: #E6EAF0;
+                   -fx-background-radius: 10;
+                   -fx-border-radius: 10;
+                   -fx-font-size: 52px;
+                   -fx-font-weight: 800;" />
+
+    <Button layoutX="70" layoutY="510"
+            prefWidth="960" prefHeight="165"
+            text="Mechanics and skills"
+            onAction="#handleMechanicsAndSkills"
+            style="-fx-background-color: white;
+                   -fx-border-color: #E6EAF0;
+                   -fx-background-radius: 10;
+                   -fx-border-radius: 10;
+                   -fx-font-size: 52px;
+                   -fx-font-weight: 800;" />
+
+    <Button layoutX="70" layoutY="705"
+            prefWidth="140" prefHeight="44"
+            text="Log out"
+            onAction="#handleLogout"
+            style="-fx-border-color: black;
+                   -fx-background-color: transparent;
+                   -fx-font-weight: 600;" />
+
+</AnchorPane>

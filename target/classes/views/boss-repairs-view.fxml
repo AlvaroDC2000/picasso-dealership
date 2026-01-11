@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="800" prefWidth="1100.0" styleClass="root"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="dealership.controllers.BossRepairsController">
+
+    <Button fx:id="backButton"
+            layoutX="1040" layoutY="25"
+            prefWidth="40" prefHeight="40"
+            text="‹"
+            onAction="#handleBack"
+            style="-fx-background-color: transparent;
+                   -fx-text-fill: #2563EB;
+                   -fx-font-size: 34px;
+                   -fx-font-weight: 700;
+                   -fx-padding: 0;" />
+
+    <Label layoutX="70" layoutY="45"
+           text="View repairs"
+           style="-fx-font-size: 52px; -fx-font-weight: 800;" />
+
+    <VBox layoutX="140" layoutY="150"
+          prefWidth="820" prefHeight="600"
+          spacing="18"
+          style="-fx-background-color: white;
+                 -fx-border-color: #E6EAF0;
+                 -fx-border-radius: 8px;
+                 -fx-background-radius: 8px;
+                 -fx-padding: 25;">
+
+        <TableView fx:id="repairsTable" prefWidth="770" prefHeight="520">
+            <columns>
+                <TableColumn fx:id="repairIdColumn" text="Repair ID" prefWidth="140" />
+                <TableColumn fx:id="vehicleColumn" text="Vehicle" prefWidth="320" />
+                <TableColumn fx:id="statusColumn" text="Status" prefWidth="170" />
+                <TableColumn fx:id="actionColumn" text="Action" prefWidth="120" />
+            </columns>
+        </TableView>
+
+        <Label fx:id="errorLabel" text=""
+               wrapText="true"
+               style="-fx-font-size: 16px; -fx-text-fill: #DC2626;" />
+
+    </VBox>
+
+</AnchorPane>
