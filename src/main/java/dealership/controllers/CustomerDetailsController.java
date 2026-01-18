@@ -7,6 +7,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+/**
+ * Controller for the customer details popup/screen.
+ * <p>
+ * This view is used to display customer contact information related to a repair,
+ * plus the vehicle involved. It also provides a simple "Notify" action and a
+ * back navigation to return to the previous scene.
+ * </p>
+ */
 public class CustomerDetailsController {
 
     @FXML
@@ -26,16 +34,40 @@ public class CustomerDetailsController {
     private Stage stage;
     private Scene previousScene; 
 
+    /**
+     * Sets the navigation context needed to return back to the previous screen.
+     * <p>
+     * This controller does not load scenes by itself. Instead, the caller provides
+     * the current stage and the scene to return to when the user presses Back.
+     * </p>
+     *
+     * @param stage the stage where this view is being shown
+     * @param previousScene the scene to restore when going back
+     */
     public void setNavigationContext(Stage stage, Scene previousScene) {
         this.stage = stage;
         this.previousScene = previousScene;
     }
 
+    /**
+     * Sets the repair details to be displayed in this view.
+     * <p>
+     * Once details are set, the UI labels are immediately populated.
+     * </p>
+     *
+     * @param details repair details containing customer and vehicle information
+     */
     public void setDetails(RepairDetails details) {
         this.details = details;
         loadData();
     }
 
+    /**
+     * Loads data from the current {@link #details} into the UI labels.
+     * <p>
+     * If details are not present, this method does nothing.
+     * </p>
+     */
     private void loadData() {
         if (details == null) return;
 
@@ -45,6 +77,13 @@ public class CustomerDetailsController {
         vehicleLabel.setText("Vehicle\n" + details.getVehicleText());
     }
 
+    /**
+     * Handles the notify action.
+     * <p>
+     * For now, it shows a confirmation information dialog indicating that the
+     * notification was sent successfully.
+     * </p>
+     */
     @FXML
     private void handleNotify() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -54,6 +93,12 @@ public class CustomerDetailsController {
         alert.showAndWait();
     }
 
+    /**
+     * Handles the back action.
+     * <p>
+     * Restores the previous scene in the same stage if both were provided.
+     * </p>
+     */
     @FXML
     private void handleBack() {
         try {

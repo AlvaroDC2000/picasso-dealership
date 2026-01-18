@@ -1,13 +1,20 @@
+/* =========================================================
+   BASE / GLOBAL STYLES
+   Used by the whole application
+   ========================================================= */
+
 .root {
     -fx-background-color: #F6F7FB;
     -fx-font-family: "Inter", "Roboto", "System";
 }
 
+/* Default labels (forms, small texts) */
 .label {
     -fx-text-fill: #6B7280;
     -fx-font-size: 15px;
 }
 
+/* Text fields and password fields */
 .field {
     -fx-background-color: white;
     -fx-border-color: #E6EAF0;
@@ -20,6 +27,7 @@
     -fx-border-color: #2563EB;
 }
 
+/* Primary buttons (login, save, create, etc.) */
 .btn-primary {
     -fx-background-color: #2563EB;
     -fx-text-fill: white;
@@ -31,7 +39,88 @@
     -fx-background-color: #1D4ED8;
 }
 
+/* Error messages */
 .error {
     -fx-text-fill: #EF4444;
     -fx-font-size: 13px;
 }
+
+/* =========================================================
+   SALES MODULE - SIDEBAR (match the wireframe)
+   ========================================================= */
+
+.sidebar {
+    -fx-background-color: #2563EB;
+}
+
+.sidebar-divider {
+    -fx-background-color: white;
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 56px;
+    -fx-font-weight: 300;
+    -fx-alignment: CENTER;
+    -fx-padding: 0;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.12);
+}
+
+
+
+/* =========================================================
+   SALES MODULE - CONTENT AREA (CENTER)
+   ========================================================= */
+
+/* Main content background */
+.content-holder {
+    -fx-background-color: #F6F7FB;
+}
+
+/* Root container of each sales view */
+.content-root {
+    -fx-background-color: transparent;
+}
+
+/* Titles inside content area (Stock, Customers, etc.) */
+.content-title {
+    -fx-text-fill: #111827;
+    -fx-font-size: 42px;
+    -fx-font-weight: 700;
+}
+
+/* =========================================================
+   TABLES (future use: vehicles, customers, proposals, sales)
+   ========================================================= */
+
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #E6EAF0;
+    -fx-border-width: 1px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #F9FAFB;
+}
+
+.table-view .column-header {
+    -fx-font-size: 14px;
+    -fx-text-fill: #374151;
+    -fx-font-weight: 600;
+}
+
+.table-row-cell {
+    -fx-font-size: 15px;
+    -fx-text-fill: #111827;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: rgba(37, 99, 235, 0.15);
+}
+

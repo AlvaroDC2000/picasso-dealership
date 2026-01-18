@@ -20,6 +20,14 @@ import javafx.stage.Stage;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controller for the "Register repair" screen (boss flow).
+ * <p>
+ * This controller allows the boss to create a new repair order by selecting:
+ * a vehicle, a customer and an assigned mechanic, plus writing some notes.
+ * The required combo data is loaded from the database on initialization.
+ * </p>
+ */
 public class RegisterRepairController {
 
     @FXML
@@ -39,6 +47,13 @@ public class RegisterRepairController {
 
     private IdName selectedMechanic;
 
+    /**
+     * Initializes the controller after the FXML has been loaded.
+     * <p>
+     * It loads vehicles and customers from the database and sets initial UI values.
+     * If any database load fails, a message is shown on the screen.
+     * </p>
+     */
     @FXML
     private void initialize() {
         errorLabel.setText("");
@@ -62,6 +77,15 @@ public class RegisterRepairController {
         notesArea.setText("");
     }
 
+    /**
+     * Handles the back action.
+     * <p>
+     * Returns to the boss menu screen. If the navigation fails, an error message
+     * is displayed in the view.
+     * </p>
+     *
+     * @param event the action event triggered by the back button
+     */
     @FXML
     private void handleBack(javafx.event.ActionEvent event) {
         errorLabel.setText("");
@@ -73,6 +97,15 @@ public class RegisterRepairController {
         }
     }
 
+    /**
+     * Opens a dialog to select and assign a mechanic to the new repair.
+     * <p>
+     * The mechanics list is loaded from the database. If the user selects a mechanic,
+     * the selection is stored and the UI label is updated.
+     * </p>
+     *
+     * @param event the action event triggered by the assign mechanic button
+     */
     @FXML
     private void handleAssignMechanic(javafx.event.ActionEvent event) {
         errorLabel.setText("");
@@ -103,6 +136,16 @@ public class RegisterRepairController {
         }
     }
 
+    /**
+     * Creates a new repair order with the selected data.
+     * <p>
+     * This method validates that a vehicle, customer and mechanic are selected,
+     * verifies the session boss ID, checks notes content and then calls the DAO
+     * layer to persist the repair order.
+     * </p>
+     *
+     * @param event the action event triggered by the create repair button
+     */
     @FXML
     private void handleCreateRepair(javafx.event.ActionEvent event) {
         errorLabel.setText("");
@@ -145,7 +188,7 @@ public class RegisterRepairController {
                     notes
             );
 
-            goTo(event, "/views/boss-menu-view.fxml");
+            goTo(event, "/views/boss-repairs-view.fxml");
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -153,6 +196,17 @@ public class RegisterRepairController {
         }
     }
 
+    /**
+     * Navigates to a given FXML view by replacing the current scene.
+     * <p>
+     * This method is used by this controller to move between screens.
+     * If the main stylesheet exists, it is applied to the loaded scene.
+     * </p>
+     *
+     * @param event the action event that triggered navigation
+     * @param fxmlPath the target FXML path
+     * @throws Exception if the FXML file or resources cannot be loaded
+     */
     private void goTo(javafx.event.ActionEvent event, String fxmlPath) throws Exception {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
@@ -166,21 +220,48 @@ public class RegisterRepairController {
         stage.show();
     }
 
+    /**
+     * Small helper model used to display an ID + name pair inside combo boxes and dialogs.
+     * <p>
+     * The {@link #toString()} method returns the name so JavaFX controls show the name
+     * by default while keeping the ID available for database operations.
+     * </p>
+     */
     public static class IdName {
         private final int id;
         private final String name;
 
+        /**
+         * Creates a new ID/name pair.
+         *
+         * @param id the database identifier
+         * @param name the display name to show in the UI
+         */
         public IdName(int id, String name) {
             this.id = id;
             this.name = name;
         }
 
+        /**
+         * Returns the identifier of this item.
+         *
+         * @return the ID value
+         */
         public int getId() { return id; }
 
+        /**
+         * Returns the display name of this item.
+         *
+         * @return the name value
+         */
         public String getName() { return name; }
 
+        /**
+         * Returns the string representation used by JavaFX controls.
+         *
+         * @return the name value
+         */
         @Override
         public String toString() { return name; }
     }
 }
-

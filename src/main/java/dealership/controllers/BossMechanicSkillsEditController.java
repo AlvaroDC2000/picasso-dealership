@@ -12,6 +12,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
+/**
+ * Controller responsible for editing a mechanic's skills by the boss mechanic.
+ * <p>
+ * This controller allows the boss to view and update the skills assigned
+ * to a selected mechanic, ensuring that the mechanic belongs to the same
+ * dealership and that the boss has the required permissions.
+ * </p>
+ */
 public class BossMechanicSkillsEditController {
 
     @FXML
@@ -25,6 +33,15 @@ public class BossMechanicSkillsEditController {
     private Integer bossId;
     private Integer mechanicId;
 
+    /**
+     * Initializes the controller after the FXML file has been loaded.
+     * <p>
+     * It retrieves the current boss user ID from the session context and
+     * the selected mechanic ID from the mechanic selection context.
+     * If any required data is missing, the view is disabled and an
+     * error message is shown.
+     * </p>
+     */
     @FXML
     public void initialize() {
         errorLabel.setText("");
@@ -41,6 +58,14 @@ public class BossMechanicSkillsEditController {
         loadSkills();
     }
 
+    /**
+     * Loads the current skills of the selected mechanic.
+     * <p>
+     * Skills are fetched from the database using the boss and mechanic IDs.
+     * If the mechanic does not exist or the boss has no permissions,
+     * the input area is disabled and an error message is displayed.
+     * </p>
+     */
     private void loadSkills() {
         try {
             String skills = userDao.findMechanicSkillsForBossDealership(bossId, mechanicId);
@@ -57,6 +82,16 @@ public class BossMechanicSkillsEditController {
         }
     }
 
+    /**
+     * Handles the save action for updating mechanic skills.
+     * <p>
+     * This method validates session data, retrieves the updated skills
+     * from the text area and persists them using the data access layer.
+     * On success, it navigates back to the mechanic skills overview screen.
+     * </p>
+     *
+     * @param event the action event triggered by the save button
+     */
     @FXML
     private void handleSave(javafx.event.ActionEvent event) {
         errorLabel.setText("");
@@ -82,6 +117,15 @@ public class BossMechanicSkillsEditController {
         }
     }
 
+    /**
+     * Handles the back navigation action.
+     * <p>
+     * This method returns the user to the mechanic skills overview screen
+     * without applying any changes.
+     * </p>
+     *
+     * @param event the action event triggered by the back button
+     */
     @FXML
     private void handleBack(javafx.event.ActionEvent event) {
         try {
@@ -92,6 +136,17 @@ public class BossMechanicSkillsEditController {
         }
     }
 
+    /**
+     * Navigates to a different view.
+     * <p>
+     * This method loads the given FXML file, applies the main stylesheet
+     * if available and replaces the current scene on the active stage.
+     * </p>
+     *
+     * @param source   the node that triggered the navigation
+     * @param fxmlPath the path to the FXML file to be loaded
+     * @throws Exception if the FXML file or resources cannot be loaded
+     */
     private void goTo(Node source, String fxmlPath) throws Exception {
         Stage stage = (Stage) source.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));

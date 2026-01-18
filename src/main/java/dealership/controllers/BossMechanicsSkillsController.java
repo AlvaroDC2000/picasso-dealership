@@ -19,6 +19,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+/**
+ * Controller for the boss mechanic skills overview screen.
+ * <p>
+ * This screen lists all mechanics from the boss dealership together with their
+ * current skills and status. From the table, the boss can open the edit screen
+ * for a specific mechanic using the "Edit" action link.
+ * </p>
+ */
 public class BossMechanicsSkillsController {
 
     @FXML
@@ -44,6 +52,14 @@ public class BossMechanicsSkillsController {
 
     private final UserDao userDao = new UserDao();
 
+    /**
+     * Initializes the controller after the FXML has been loaded.
+     * <p>
+     * It binds the table columns to the {@link MechanicSkillRow} properties,
+     * configures the action column to display an "Edit" link, and finally
+     * loads the mechanics list for the current boss dealership.
+     * </p>
+     */
     @FXML
     public void initialize() {
         mechanicColumn.setCellValueFactory(new PropertyValueFactory<>("mechanicName"));
@@ -54,6 +70,14 @@ public class BossMechanicsSkillsController {
         loadMechanics();
     }
 
+    /**
+     * Configures the action column in the table.
+     * <p>
+     * Each row shows an "Edit" button styled as a link. When clicked, it stores
+     * the selected mechanic ID in {@link MechanicSelectionContext} and navigates
+     * to the mechanic skills edit screen.
+     * </p>
+     */
     private void setupActionColumn() {
         actionColumn.setCellFactory(col -> new TableCell<>() {
             private final Button editButton = new Button("Edit");
@@ -82,6 +106,16 @@ public class BossMechanicsSkillsController {
                 });
             }
 
+            /**
+             * Updates the cell content depending on whether the row is empty.
+             * <p>
+             * When the row is not empty, the edit button is shown. Otherwise, the
+             * cell is cleared.
+             * </p>
+             *
+             * @param item  the cell item (unused because this is a Void column)
+             * @param empty whether the cell is empty
+             */
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -90,6 +124,14 @@ public class BossMechanicsSkillsController {
         });
     }
 
+    /**
+     * Loads mechanics for the boss dealership and fills the table.
+     * <p>
+     * The boss user ID is read from {@link SessionContext}. If the session has
+     * expired, an error is displayed. Otherwise, mechanics and their skills are
+     * retrieved from the database using {@link UserDao}.
+     * </p>
+     */
     private void loadMechanics() {
         errorLabel.setText("");
 
@@ -110,6 +152,14 @@ public class BossMechanicsSkillsController {
         }
     }
 
+    /**
+     * Handles the back action from this screen.
+     * <p>
+     * It clears the mechanic selection context and navigates back to the boss menu.
+     * </p>
+     *
+     * @param event the action event triggered by the back button
+     */
     @FXML
     private void handleBack(javafx.event.ActionEvent event) {
         try {
@@ -121,6 +171,17 @@ public class BossMechanicsSkillsController {
         }
     }
 
+    /**
+     * Navigates to a different view by replacing the current scene.
+     * <p>
+     * It loads the given FXML, applies the main stylesheet if available,
+     * and sets the scene on the current stage.
+     * </p>
+     *
+     * @param source   the node that triggered the navigation
+     * @param fxmlPath the path to the target FXML view
+     * @throws Exception if the FXML file or resources cannot be loaded
+     */
     private void goTo(Node source, String fxmlPath) throws Exception {
         Stage stage = (Stage) source.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));

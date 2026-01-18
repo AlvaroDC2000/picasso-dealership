@@ -19,6 +19,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+/**
+ * Controller for the boss repairs list screen.
+ * <p>
+ * This screen shows the repairs registered in the boss dealership and allows
+ * the boss to open the edit view for a specific repair. The selected repair ID
+ * is stored in {@link RepairSelectionContext} before navigating to the edit screen.
+ * </p>
+ */
 public class BossRepairsController {
 
     @FXML
@@ -44,6 +52,14 @@ public class BossRepairsController {
 
     private final RepairOrderDao repairOrderDao = new RepairOrderDao();
 
+    /**
+     * Initializes the controller after the FXML has been loaded.
+     * <p>
+     * It binds table columns to {@link RepairTaskRow} properties, configures the
+     * action column with an "Edit" link and loads the repairs list for the
+     * current boss user.
+     * </p>
+     */
     @FXML
     public void initialize() {
         repairIdColumn.setCellValueFactory(new PropertyValueFactory<>("repairId"));
@@ -54,6 +70,13 @@ public class BossRepairsController {
         loadRepairs();
     }
 
+    /**
+     * Configures the action column to show an "Edit" button per row.
+     * <p>
+     * The button is styled as a link. When clicked, it stores the repair ID
+     * in the {@link RepairSelectionContext} and navigates to the repair edit view.
+     * </p>
+     */
     private void setupActionColumn() {
         actionColumn.setCellFactory(col -> new TableCell<>() {
             private final Button editButton = new Button("Edit");
@@ -81,6 +104,16 @@ public class BossRepairsController {
                 });
             }
 
+            /**
+             * Updates the cell content depending on whether the row is empty.
+             * <p>
+             * If the row is empty, the graphic is cleared. Otherwise, the edit
+             * button is displayed.
+             * </p>
+             *
+             * @param item  the cell item (unused because this is a Void column)
+             * @param empty whether the cell is empty
+             */
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -93,6 +126,14 @@ public class BossRepairsController {
         });
     }
 
+    /**
+     * Loads repairs from the database and fills the table.
+     * <p>
+     * The boss user ID is retrieved from {@link SessionContext}. If the session
+     * is missing/expired, an error message is shown. Otherwise, repairs are
+     * queried through {@link RepairOrderDao}.
+     * </p>
+     */
     private void loadRepairs() {
         errorLabel.setText("");
 
@@ -113,6 +154,14 @@ public class BossRepairsController {
         }
     }
 
+    /**
+     * Handles the back action from this screen.
+     * <p>
+     * It clears the current repair selection and returns to the boss menu view.
+     * </p>
+     *
+     * @param event the action event triggered by the back button
+     */
     @FXML
     private void handleBack(javafx.event.ActionEvent event) {
         try {
@@ -124,6 +173,16 @@ public class BossRepairsController {
         }
     }
 
+    /**
+     * Navigates to a different view by loading an FXML file and replacing the scene.
+     * <p>
+     * If the main stylesheet exists, it is applied to the new scene as well.
+     * </p>
+     *
+     * @param source   the node that triggered navigation
+     * @param fxmlPath the path to the FXML view to load
+     * @throws Exception if the FXML file or resources cannot be loaded
+     */
     private void goTo(Node source, String fxmlPath) throws Exception {
         Stage stage = (Stage) source.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));

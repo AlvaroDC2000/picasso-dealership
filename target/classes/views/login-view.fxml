@@ -25,7 +25,7 @@
             </ImageView>
 
             <!-- Form -->
-            <VBox maxWidth="520" prefWidth="520" spacing="18">
+            <VBox maxWidth="520" prefWidth="520" spacing="18" alignment="CENTER">
 
                 <VBox spacing="8">
                     <Label styleClass="label" text="User" />

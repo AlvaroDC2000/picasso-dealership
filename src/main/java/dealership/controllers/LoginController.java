@@ -14,6 +14,14 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Controller for the login screen.
+ * <p>
+ * This controller validates user input, authenticates the user through {@link UserDao},
+ * stores session data in {@link SessionContext}, and redirects the user to the correct
+ * view depending on the role returned by the authentication process.
+ * </p>
+ */
 public class LoginController {
 
     @FXML
@@ -25,6 +33,16 @@ public class LoginController {
     @FXML
     private Label errorLabel;
 
+    /**
+     * Handles the login button action.
+     * <p>
+     * It reads the username and password fields, performs basic validation,
+     * calls the authentication method, stores session information and then
+     * navigates to the correct view depending on the resolved role.
+     * </p>
+     *
+     * @param event the action event triggered by the login button
+     */
     @FXML
     private void handleLogin(ActionEvent event) {
 
@@ -67,7 +85,7 @@ public class LoginController {
 
             } else if ("SALES".equals(role)) {
 
-                errorLabel.setText("Sales role will be implemented later.");
+                loadView(stage, "/views/sales-main-view.fxml");
 
             } else if ("OWNER".equals(role)) {
 
@@ -84,6 +102,16 @@ public class LoginController {
         }
     }
 
+    /**
+     * Normalizes a role name to a safe comparable value.
+     * <p>
+     * This method trims the input and converts it to uppercase. If the role name
+     * is null, it returns an empty string.
+     * </p>
+     *
+     * @param roleName the original role name coming from the database/user
+     * @return the normalized role name in uppercase (or empty string if null)
+     */
     private String normalizeRole(String roleName) {
         if (roleName == null) {
             return "";
@@ -91,6 +119,17 @@ public class LoginController {
         return roleName.trim().toUpperCase();
     }
 
+    /**
+     * Loads an FXML view into the given stage.
+     * <p>
+     * The view is loaded using {@link FXMLLoader}. If the main stylesheet exists,
+     * it is applied to the new scene as well.
+     * </p>
+     *
+     * @param stage the current application stage
+     * @param fxmlPath the FXML path to be loaded
+     * @throws Exception if the FXML file or resources cannot be loaded
+     */
     private void loadView(Stage stage, String fxmlPath) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
         Parent root = loader.load();
@@ -105,6 +144,3 @@ public class LoginController {
         stage.show();
     }
 }
-
-
-

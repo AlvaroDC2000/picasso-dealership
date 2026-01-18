@@ -16,6 +16,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
+/**
+ * Controller for the mechanic tasks screen.
+ * <p>
+ * This screen displays the list of repairs assigned to the current mechanic.
+ * From here, the mechanic can open a repair details view, access the history view,
+ * or logout back to the login screen.
+ * </p>
+ */
 public class MechanicTasksController {
 
     @FXML
@@ -35,6 +43,14 @@ public class MechanicTasksController {
 
     private final ObservableList<RepairTaskRow> tasks = FXCollections.observableArrayList();
 
+    /**
+     * Initializes the controller after the FXML has been loaded.
+     * <p>
+     * It binds the table columns to {@link RepairTaskRow} properties, configures the
+     * action column with an "Open" button and then loads the assigned tasks for the
+     * current mechanic.
+     * </p>
+     */
     @FXML
     private void initialize() {
         repairIdColumn.setCellValueFactory(data -> data.getValue().repairIdProperty());
@@ -45,6 +61,14 @@ public class MechanicTasksController {
         loadTasks();
     }
 
+    /**
+     * Loads the tasks assigned to the current mechanic.
+     * <p>
+     * The mechanic ID is retrieved from {@link SessionContext}. If the session does not
+     * provide an ID, a default value is used. Tasks are fetched from the database using
+     * {@link RepairOrderDao} and displayed in the table.
+     * </p>
+     */
     private void loadTasks() {
         tasks.clear();
 
@@ -63,6 +87,12 @@ public class MechanicTasksController {
         tasksTable.setItems(tasks);
     }
 
+    /**
+     * Configures the action column to show an "Open" button per row.
+     * <p>
+     * Clicking the button opens the repair details screen for the selected repair.
+     * </p>
+     */
     private void configureActionColumn() {
         actionColumn.setCellFactory(col -> new TableCell<>() {
 
@@ -76,6 +106,16 @@ public class MechanicTasksController {
                 });
             }
 
+            /**
+             * Updates the action cell graphic.
+             * <p>
+             * If the row is empty, the button is removed. Otherwise, the "Open" button
+             * is displayed.
+             * </p>
+             *
+             * @param item  the cell item (unused because this is a Void column)
+             * @param empty whether the cell is empty
+             */
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -84,6 +124,16 @@ public class MechanicTasksController {
         });
     }
 
+    /**
+     * Opens the repair details view for the given repair ID.
+     * <p>
+     * It loads the repair details FXML, passes the navigation context (stage + previous scene)
+     * to the controller and sets the selected repair ID to be displayed.
+     * </p>
+     *
+     * @param repairId the repair ID to open
+     * @param event the action event triggered by the open button
+     */
     private void openRepairDetails(int repairId, javafx.event.ActionEvent event) {
         try {
             Node source = (Node) event.getSource();
@@ -109,6 +159,14 @@ public class MechanicTasksController {
         }
     }
 
+    /**
+     * Handles the logout action.
+     * <p>
+     * It clears the current session and returns the user to the login view.
+     * </p>
+     *
+     * @param event the action event triggered by the logout button
+     */
     @FXML
     private void handleLogout(javafx.event.ActionEvent event) {
         SessionContext.clear();
@@ -126,6 +184,15 @@ public class MechanicTasksController {
         }
     }
 
+    /**
+     * Opens the mechanic history view.
+     * <p>
+     * It loads the history screen and passes the navigation context to allow the user
+     * to return back to this tasks view.
+     * </p>
+     *
+     * @param event the action event triggered by the history button
+     */
     @FXML
     private void handleHistory(javafx.event.ActionEvent event) {
         try {
@@ -153,4 +220,3 @@ public class MechanicTasksController {
     }
 
 }
-
