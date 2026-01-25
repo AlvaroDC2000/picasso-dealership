@@ -97,7 +97,7 @@ CREATE TABLE `repair_order` (
   CONSTRAINT `repair_order_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`),
   CONSTRAINT `repair_order_ibfk_3` FOREIGN KEY (`created_by_boss_id`) REFERENCES `user` (`id`),
   CONSTRAINT `repair_order_ibfk_4` FOREIGN KEY (`assigned_mechanic_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,7 +106,7 @@ CREATE TABLE `repair_order` (
 
 LOCK TABLES `repair_order` WRITE;
 /*!40000 ALTER TABLE `repair_order` DISABLE KEYS */;
-INSERT INTO `repair_order` VALUES (1,3,7,2,4,'FINISHED',NULL,NULL,'2026-01-11 13:25:24','2026-01-11 13:25:25','Oil change'),(2,3,3,2,4,'FINISHED',NULL,NULL,'2026-01-11 23:30:08','2026-01-11 23:30:24','Engine fail'),(3,5,6,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'Light fails'),(4,5,5,2,5,'ASSIGNED',NULL,NULL,NULL,NULL,'Engine and oil');
+INSERT INTO `repair_order` VALUES (1,3,7,2,4,'FINISHED',NULL,NULL,'2026-01-11 13:25:24','2026-01-11 13:25:25','Oil change'),(2,3,3,2,4,'FINISHED',NULL,NULL,'2026-01-11 23:30:08','2026-01-11 23:30:24','Engine fail'),(3,5,6,2,4,'IN_PROGRESS',NULL,NULL,'2026-01-12 10:34:48',NULL,'Light fails'),(4,5,5,2,5,'ASSIGNED',NULL,NULL,NULL,NULL,'Engine and oil'),(5,9,6,2,4,'FINISHED',NULL,NULL,'2026-01-12 10:33:43','2026-01-12 10:33:49','Oil and engine'),(6,2,3,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'oil and engine'),(7,3,3,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'break'),(8,22,6,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'engine'),(9,24,7,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'engine'),(10,8,7,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'engine'),(11,3,4,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'oil');
 /*!40000 ALTER TABLE `repair_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -133,6 +133,91 @@ LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
 INSERT INTO `role` VALUES (2,'CHIEF_MECHANIC'),(1,'MECHANIC'),(4,'OWNER'),(3,'SALES');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sale`
+--
+
+DROP TABLE IF EXISTS `sale`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sale` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `proposal_id` int NOT NULL,
+  `customer_id` int NOT NULL,
+  `vehicle_id` int NOT NULL,
+  `seller_user_id` int NOT NULL,
+  `dealership_id` int NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `sale_date` date NOT NULL,
+  `notes` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ux_sale_proposal` (`proposal_id`),
+  KEY `idx_sale_customer` (`customer_id`),
+  KEY `idx_sale_vehicle` (`vehicle_id`),
+  KEY `idx_sale_seller` (`seller_user_id`),
+  KEY `idx_sale_dealership` (`dealership_id`),
+  KEY `idx_sale_date` (`sale_date`),
+  CONSTRAINT `fk_sale_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`),
+  CONSTRAINT `fk_sale_dealership` FOREIGN KEY (`dealership_id`) REFERENCES `dealership` (`id`),
+  CONSTRAINT `fk_sale_proposal` FOREIGN KEY (`proposal_id`) REFERENCES `sale_proposal` (`id`),
+  CONSTRAINT `fk_sale_seller` FOREIGN KEY (`seller_user_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `fk_sale_vehicle` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sale`
+--
+
+LOCK TABLES `sale` WRITE;
+/*!40000 ALTER TABLE `sale` DISABLE KEYS */;
+INSERT INTO `sale` VALUES (1,1,1,1,12,1,10000.00,'2026-01-25','Car in perfect condition','2026-01-25 17:57:20');
+/*!40000 ALTER TABLE `sale` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sale_proposal`
+--
+
+DROP TABLE IF EXISTS `sale_proposal`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sale_proposal` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `customer_id` int NOT NULL,
+  `vehicle_id` int NOT NULL,
+  `seller_user_id` int NOT NULL,
+  `dealership_id` int NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `notes` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ACTIVE',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `valid_until` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_sale_proposal_customer` (`customer_id`),
+  KEY `idx_sale_proposal_vehicle` (`vehicle_id`),
+  KEY `idx_sale_proposal_seller` (`seller_user_id`),
+  KEY `idx_sale_proposal_dealership` (`dealership_id`),
+  KEY `idx_sale_proposal_status` (`status`),
+  CONSTRAINT `fk_sale_proposal_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`),
+  CONSTRAINT `fk_sale_proposal_dealership` FOREIGN KEY (`dealership_id`) REFERENCES `dealership` (`id`),
+  CONSTRAINT `fk_sale_proposal_seller` FOREIGN KEY (`seller_user_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `fk_sale_proposal_vehicle` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sale_proposal`
+--
+
+LOCK TABLES `sale_proposal` WRITE;
+/*!40000 ALTER TABLE `sale_proposal` DISABLE KEYS */;
+INSERT INTO `sale_proposal` VALUES (1,1,1,12,1,10000.00,'Car in perfect condition','ACCEPTED','2026-01-25 17:57:20','2026-01-25 17:57:20','2026-02-09'),(2,2,2,12,1,11000.00,'Includes 1 year warranty','ACTIVE','2026-01-25 17:57:20',NULL,'2026-02-09');
+/*!40000 ALTER TABLE `sale_proposal` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -166,7 +251,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'owner','1234','Juan García García',1,1,4,NULL),(2,'jefe.malaga','1234','Francisco Javier Morales',1,1,2,NULL),(3,'jefe.marbella','1234','Antonio Ruiz Fernández',1,2,2,NULL),(4,'mec.alex','1234','Alejandro Sánchez López',1,1,1,'Engine, electrical'),(5,'mec.marta','1234','Marta García Pérez',1,1,1,'Brakes, engine'),(6,'mec.david','1234','David Romero Díaz',1,1,1,'Engine'),(7,'mec.lucia','1234','Lucía Torres Martín',1,1,1,'Brakes, engine'),(8,'mec.sergio','1234','Sergio Navarro Gómez',1,2,1,NULL),(9,'mec.paula','1234','Paula Jiménez Ruiz',1,2,1,NULL),(10,'mec.ivan','1234','Iván Ortega Castillo',1,3,1,NULL),(11,'mec.sofia','1234','Sofía Molina Herrera',1,3,1,NULL),(12,'ventas.laura','1234','Laura Campos Vega',1,1,3,NULL),(13,'ventas.adrian','1234','Adrián Blanco Núñez',1,2,3,NULL);
+INSERT INTO `user` VALUES (1,'owner','1234','Juan García García',1,1,4,NULL),(2,'jefe.malaga','1234','Francisco Javier Morales',1,1,2,NULL),(3,'jefe.marbella','1234','Antonio Ruiz Fernández',1,2,2,NULL),(4,'mec.alex','1234','Alejandro Sánchez López',1,1,1,'Engine, electrical, break,oil'),(5,'mec.marta','1234','Marta García Pérez',1,1,1,'Brakes, engine'),(6,'mec.david','1234','David Romero Díaz',1,1,1,'Engine'),(7,'mec.lucia','1234','Lucía Torres Martín',1,1,1,'Brakes, engine'),(8,'mec.sergio','1234','Sergio Navarro Gómez',1,2,1,NULL),(9,'mec.paula','1234','Paula Jiménez Ruiz',1,2,1,NULL),(10,'mec.ivan','1234','Iván Ortega Castillo',1,3,1,NULL),(11,'mec.sofia','1234','Sofía Molina Herrera',1,3,1,NULL),(12,'ventas.laura','1234','Laura Campos Vega',1,1,3,NULL),(13,'ventas.adrian','1234','Adrián Blanco Núñez',1,2,3,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -180,16 +265,26 @@ DROP TABLE IF EXISTS `vehicle`;
 CREATE TABLE `vehicle` (
   `id` int NOT NULL AUTO_INCREMENT,
   `vin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `plate` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `brand` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `model` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `year` int DEFAULT NULL,
+  `color` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mileage` int DEFAULT NULL,
+  `notes` text COLLATE utf8mb4_unicode_ci,
   `category_id` int DEFAULT NULL,
   `entry_date` date DEFAULT NULL,
   `current_dealership_id` int DEFAULT NULL,
   `status` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sold_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `vin` (`vin`),
+  UNIQUE KEY `ux_vehicle_plate` (`plate`),
   KEY `category_id` (`category_id`),
   KEY `current_dealership_id` (`current_dealership_id`),
+  KEY `idx_vehicle_entry_date` (`entry_date`),
+  KEY `idx_vehicle_status` (`status`),
+  KEY `idx_vehicle_brand_model` (`brand`,`model`),
   CONSTRAINT `vehicle_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `vehicle_category` (`id`),
   CONSTRAINT `vehicle_ibfk_2` FOREIGN KEY (`current_dealership_id`) REFERENCES `dealership` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -201,7 +296,7 @@ CREATE TABLE `vehicle` (
 
 LOCK TABLES `vehicle` WRITE;
 /*!40000 ALTER TABLE `vehicle` DISABLE KEYS */;
-INSERT INTO `vehicle` VALUES (1,'VIN001','SEAT','Ibiza 1.0 TSI 2020',5,'2026-01-01',1,'IN_REPAIR'),(2,'VIN002','SEAT','León 1.5 TSI 2019',5,'2026-01-02',1,'IN_REPAIR'),(3,'VIN003','Volkswagen','Golf 1.5 TSI 2018',5,'2026-01-03',1,'IN_REPAIR'),(4,'VIN004','Renault','Clio 1.2 2018',5,'2026-01-04',1,'IN_REPAIR'),(5,'VIN005','Renault','Megane 1.3 TCe 2020',1,'2026-01-05',1,'IN_REPAIR'),(6,'VIN006','Peugeot','208 PureTech 2021',5,'2026-01-06',1,'IN_REPAIR'),(7,'VIN007','Peugeot','308 1.6 BlueHDi',1,'2026-01-07',1,'IN_REPAIR'),(8,'VIN008','Toyota','Corolla Hybrid 2020',6,'2026-01-08',1,'IN_REPAIR'),(9,'VIN009','Toyota','Yaris Hybrid 2021',6,'2026-01-09',1,'IN_REPAIR'),(10,'VIN010','Hyundai','i30 1.4 2019',5,'2026-01-10',1,'IN_REPAIR'),(11,'VIN011','BMW','320d 2017',1,'2026-01-01',2,'IN_REPAIR'),(12,'VIN012','BMW','X1 2.0d 2018',2,'2026-01-02',2,'IN_REPAIR'),(13,'VIN013','Audi','A3 1.6 TDI',5,'2026-01-03',2,'IN_REPAIR'),(14,'VIN014','Audi','A4 2.0 TDI',1,'2026-01-04',2,'IN_REPAIR'),(15,'VIN015','Mercedes','A200 2019',5,'2026-01-05',2,'IN_REPAIR'),(16,'VIN016','Mercedes','C220d 2018',1,'2026-01-06',2,'IN_REPAIR'),(17,'VIN017','Ford','Focus EcoBoost 2020',5,'2026-01-07',2,'IN_REPAIR'),(18,'VIN018','Ford','Kuga 1.5 2019',2,'2026-01-08',2,'IN_REPAIR'),(19,'VIN019','Nissan','Qashqai dCi 2018',2,'2026-01-09',2,'IN_REPAIR'),(20,'VIN020','Mazda','CX-5 2.0 2019',2,'2026-01-10',2,'IN_REPAIR'),(21,'VIN021','Opel','Corsa 1.2 2021',5,'2026-01-01',3,'IN_REPAIR'),(22,'VIN022','Opel','Astra 1.6 CDTI',1,'2026-01-02',3,'IN_REPAIR'),(23,'VIN023','Citroën','C3 1.2 2019',5,'2026-01-03',3,'IN_REPAIR'),(24,'VIN024','Citroën','Berlingo BlueHDi',3,'2026-01-04',3,'IN_REPAIR'),(25,'VIN025','Kia','Ceed 1.4 T-GDi',5,'2026-01-05',3,'IN_REPAIR'),(26,'VIN026','Kia','Sportage 1.6',2,'2026-01-06',3,'IN_REPAIR'),(27,'VIN027','Skoda','Octavia 1.5 TSI',1,'2026-01-07',3,'IN_REPAIR'),(28,'VIN028','Skoda','Kamiq 1.0 TSI',2,'2026-01-08',3,'IN_REPAIR'),(29,'VIN029','Tesla','Model 3 2022',6,'2026-01-09',3,'IN_REPAIR'),(30,'VIN030','Cupra','Formentor 2.0',2,'2026-01-10',3,'IN_REPAIR'),(31,'VIN031','Dacia','Sandero 2020',5,'2026-01-01',1,'IN_REPAIR'),(32,'VIN032','Dacia','Duster 2019',2,'2026-01-02',1,'IN_REPAIR'),(33,'VIN033','Fiat','500 Hybrid 2021',6,'2026-01-03',1,'IN_REPAIR'),(34,'VIN034','Fiat','Tipo 1.4 2018',1,'2026-01-04',1,'IN_REPAIR'),(35,'VIN035','Honda','Civic 1.5 2019',1,'2026-01-05',1,'IN_REPAIR'),(36,'VIN036','Honda','CR-V Hybrid 2020',6,'2026-01-06',1,'IN_REPAIR'),(37,'VIN037','Volvo','XC40 T3 2021',2,'2026-01-07',2,'IN_REPAIR'),(38,'VIN038','Volvo','V40 D2 2018',1,'2026-01-08',2,'IN_REPAIR'),(39,'VIN039','Mini','Cooper 1.5 2019',5,'2026-01-09',2,'IN_REPAIR'),(40,'VIN040','Mini','Countryman 2020',2,'2026-01-10',2,'IN_REPAIR'),(41,'VIN041','Jeep','Renegade 1.3',2,'2026-01-01',3,'IN_REPAIR'),(42,'VIN042','Jeep','Compass 1.6',2,'2026-01-02',3,'IN_REPAIR'),(43,'VIN043','Suzuki','Vitara 1.4',2,'2026-01-03',3,'IN_REPAIR'),(44,'VIN044','Suzuki','Swift 1.2',5,'2026-01-04',3,'IN_REPAIR'),(45,'VIN045','Alfa Romeo','Giulietta 1.6',1,'2026-01-05',3,'IN_REPAIR'),(46,'VIN046','Alfa Romeo','Stelvio 2.0',2,'2026-01-06',3,'IN_REPAIR'),(47,'VIN047','Hyundai','Kona Hybrid',6,'2026-01-07',3,'IN_REPAIR'),(48,'VIN048','Hyundai','i20 1.0',5,'2026-01-08',3,'IN_REPAIR'),(49,'VIN049','Toyota','RAV4 Hybrid',6,'2026-01-09',3,'IN_REPAIR'),(50,'VIN050','Toyota','C-HR Hybrid',6,'2026-01-10',3,'IN_REPAIR');
+INSERT INTO `vehicle` VALUES (1,'VIN001','2354MCD','SEAT','Ibiza 1.0 TSI 2020',2017,'Black',68500,'Well-maintained vehicle, ideal for city driving.',5,'2026-01-01',1,'SOLD','2026-01-25 17:57:20'),(2,'VIN002','2154LCD','SEAT','León 1.5 TSI 2019',2018,'White',52000,'Clean interior, low fuel consumption.',5,'2026-01-02',1,'AVAILABLE',NULL),(3,'VIN003','2324MLD','Volkswagen','Golf 1.5 TSI 2018',2019,'Blue',41000,'Good condition, recent service.',5,'2026-01-03',1,'AVAILABLE',NULL),(4,'VIN004','2351NCD','Renault','Clio 1.2 2018',2017,'Red',79000,'Good overall condition.',5,'2026-01-04',1,'AVAILABLE',NULL),(5,'VIN005','0005MCD','Renault','Megane 1.3 TCe 2020',2020,'Silver',41500,'Vehicle currently in repair. Pending final inspection.',1,'2026-01-05',1,'AVAILABLE',NULL),(6,'VIN006','0006MCD','Peugeot','208 PureTech 2021',2021,'Black',43800,'Vehicle currently in repair. Pending final inspection.',5,'2026-01-06',1,'AVAILABLE',NULL),(7,'VIN007','0007MCD','Peugeot','308 1.6 BlueHDi',2018,'White',46100,'Vehicle currently in repair. Pending final inspection.',1,'2026-01-07',1,'AVAILABLE',NULL),(8,'VIN008','0008MCD','Toyota','Corolla Hybrid 2020',2020,'Blue',48400,'Vehicle currently in repair. Pending final inspection.',6,'2026-01-08',1,'IN_REPAIR',NULL),(9,'VIN009','0009MCD','Toyota','Yaris Hybrid 2021',2021,'Red',50700,'Vehicle currently in repair. Pending final inspection.',6,'2026-01-09',1,'IN_REPAIR',NULL),(10,'VIN010','0010MCD','Hyundai','i30 1.4 2019',2019,'Gray',53000,'Vehicle currently in repair. Pending final inspection.',5,'2026-01-10',1,'IN_REPAIR',NULL),(11,'VIN011','0011MCD','BMW','320d 2017',2017,'Silver',55300,'Vehicle currently in repair. Pending final inspection.',1,'2026-01-01',2,'IN_REPAIR',NULL),(12,'VIN012','0012MCD','BMW','X1 2.0d 2018',2018,'Black',57600,'Vehicle currently in repair. Pending final inspection.',2,'2026-01-02',2,'IN_REPAIR',NULL),(13,'VIN013','0013MCD','Audi','A3 1.6 TDI',2018,'White',59900,'Vehicle currently in repair. Pending final inspection.',5,'2026-01-03',2,'IN_REPAIR',NULL),(14,'VIN014','0014MCD','Audi','A4 2.0 TDI',2019,'Blue',62200,'Vehicle currently in repair. Pending final inspection.',1,'2026-01-04',2,'IN_REPAIR',NULL),(15,'VIN015','0015MCD','Mercedes','A200 2019',2019,'Red',64500,'Vehicle currently in repair. Pending final inspection.',5,'2026-01-05',2,'IN_REPAIR',NULL),(16,'VIN016','0016MCD','Mercedes','C220d 2018',2018,'Gray',66800,'Vehicle currently in repair. Pending final inspection.',1,'2026-01-06',2,'IN_REPAIR',NULL),(17,'VIN017','0017MCD','Ford','Focus EcoBoost 2020',2020,'Silver',69100,'Vehicle currently in repair. Pending final inspection.',5,'2026-01-07',2,'IN_REPAIR',NULL),(18,'VIN018','0018MCD','Ford','Kuga 1.5 2019',2019,'Black',71400,'Vehicle currently in repair. Pending final inspection.',2,'2026-01-08',2,'IN_REPAIR',NULL),(19,'VIN019','0019MCD','Nissan','Qashqai dCi 2018',2018,'White',73700,'Vehicle currently in repair. Pending final inspection.',2,'2026-01-09',2,'IN_REPAIR',NULL),(20,'VIN020','0020MCD','Mazda','CX-5 2.0 2019',2019,'Blue',76000,'Vehicle currently in repair. Pending final inspection.',2,'2026-01-10',2,'IN_REPAIR',NULL),(21,'VIN021','0021MCD','Opel','Corsa 1.2 2021',2021,'Red',78300,'Vehicle currently in repair. Pending final inspection.',5,'2026-01-01',3,'IN_REPAIR',NULL),(22,'VIN022','0022MCD','Opel','Astra 1.6 CDTI',2021,'Gray',80600,'Vehicle currently in repair. Pending final inspection.',1,'2026-01-02',3,'IN_REPAIR',NULL),(23,'VIN023','0023MCD','Citroën','C3 1.2 2019',2019,'Silver',82900,'Vehicle currently in repair. Pending final inspection.',5,'2026-01-03',3,'IN_REPAIR',NULL),(24,'VIN024','0024MCD','Citroën','Berlingo BlueHDi',2017,'Black',85200,'Vehicle currently in repair. Pending final inspection.',3,'2026-01-04',3,'IN_REPAIR',NULL),(25,'VIN025','0025MCD','Kia','Ceed 1.4 T-GDi',2018,'White',87500,'Vehicle currently in repair. Pending final inspection.',5,'2026-01-05',3,'IN_REPAIR',NULL),(26,'VIN026','0026MCD','Kia','Sportage 1.6',2019,'Blue',89800,'Vehicle currently in repair. Pending final inspection.',2,'2026-01-06',3,'IN_REPAIR',NULL),(27,'VIN027','0027MCD','Skoda','Octavia 1.5 TSI',2020,'Red',92100,'Vehicle currently in repair. Pending final inspection.',1,'2026-01-07',3,'IN_REPAIR',NULL),(28,'VIN028','0028MCD','Skoda','Kamiq 1.0 TSI',2021,'Gray',94400,'Vehicle currently in repair. Pending final inspection.',2,'2026-01-08',3,'IN_REPAIR',NULL),(29,'VIN029','0029MCD','Tesla','Model 3 2022',2022,'Silver',96700,'Vehicle currently in repair. Pending final inspection.',6,'2026-01-09',3,'IN_REPAIR',NULL),(30,'VIN030','0030MCD','Cupra','Formentor 2.0',2017,'Black',99000,'Vehicle currently in repair. Pending final inspection.',2,'2026-01-10',3,'IN_REPAIR',NULL),(31,'VIN031','0031MCD','Dacia','Sandero 2020',2020,'White',101300,'Vehicle currently in repair. Pending final inspection.',5,'2026-01-01',1,'IN_REPAIR',NULL),(32,'VIN032','0032MCD','Dacia','Duster 2019',2019,'Blue',103600,'Vehicle currently in repair. Pending final inspection.',2,'2026-01-02',1,'IN_REPAIR',NULL),(33,'VIN033','0033MCD','Fiat','500 Hybrid 2021',2021,'Red',105900,'Vehicle currently in repair. Pending final inspection.',6,'2026-01-03',1,'IN_REPAIR',NULL),(34,'VIN034','0034MCD','Fiat','Tipo 1.4 2018',2018,'Gray',108200,'Vehicle currently in repair. Pending final inspection.',1,'2026-01-04',1,'IN_REPAIR',NULL),(35,'VIN035','0035MCD','Honda','Civic 1.5 2019',2019,'Silver',110500,'Vehicle currently in repair. Pending final inspection.',1,'2026-01-05',1,'IN_REPAIR',NULL),(36,'VIN036','0036MCD','Honda','CR-V Hybrid 2020',2020,'Black',112800,'Vehicle currently in repair. Pending final inspection.',6,'2026-01-06',1,'IN_REPAIR',NULL),(37,'VIN037','0037MCD','Volvo','XC40 T3 2021',2021,'White',115100,'Vehicle currently in repair. Pending final inspection.',2,'2026-01-07',2,'IN_REPAIR',NULL),(38,'VIN038','0038MCD','Volvo','V40 D2 2018',2018,'Blue',117400,'Vehicle currently in repair. Pending final inspection.',1,'2026-01-08',2,'IN_REPAIR',NULL),(39,'VIN039','0039MCD','Mini','Cooper 1.5 2019',2019,'Red',119700,'Vehicle currently in repair. Pending final inspection.',5,'2026-01-09',2,'IN_REPAIR',NULL),(40,'VIN040','0040MCD','Mini','Countryman 2020',2020,'Gray',122000,'Vehicle currently in repair. Pending final inspection.',2,'2026-01-10',2,'IN_REPAIR',NULL),(41,'VIN041','0041MCD','Jeep','Renegade 1.3',2022,'Silver',124300,'Vehicle currently in repair. Pending final inspection.',2,'2026-01-01',3,'IN_REPAIR',NULL),(42,'VIN042','0042MCD','Jeep','Compass 1.6',2017,'Black',126600,'Vehicle currently in repair. Pending final inspection.',2,'2026-01-02',3,'IN_REPAIR',NULL),(43,'VIN043','0043MCD','Suzuki','Vitara 1.4',2018,'White',128900,'Vehicle currently in repair. Pending final inspection.',2,'2026-01-03',3,'IN_REPAIR',NULL),(44,'VIN044','0044MCD','Suzuki','Swift 1.2',2019,'Blue',131200,'Vehicle currently in repair. Pending final inspection.',5,'2026-01-04',3,'IN_REPAIR',NULL),(45,'VIN045','0045MCD','Alfa Romeo','Giulietta 1.6',2020,'Red',133500,'Vehicle currently in repair. Pending final inspection.',1,'2026-01-05',3,'IN_REPAIR',NULL),(46,'VIN046','0046MCD','Alfa Romeo','Stelvio 2.0',2021,'Gray',135800,'Vehicle currently in repair. Pending final inspection.',2,'2026-01-06',3,'IN_REPAIR',NULL),(47,'VIN047','0047MCD','Hyundai','Kona Hybrid',2022,'Silver',138100,'Vehicle currently in repair. Pending final inspection.',6,'2026-01-07',3,'IN_REPAIR',NULL),(48,'VIN048','0048MCD','Hyundai','i20 1.0',2017,'Black',140400,'Vehicle currently in repair. Pending final inspection.',5,'2026-01-08',3,'IN_REPAIR',NULL),(49,'VIN049','0049MCD','Toyota','RAV4 Hybrid',2018,'White',142700,'Vehicle currently in repair. Pending final inspection.',6,'2026-01-09',3,'IN_REPAIR',NULL),(50,'VIN050','0050MCD','Toyota','C-HR Hybrid',2019,'Blue',145000,'Vehicle currently in repair. Pending final inspection.',6,'2026-01-10',3,'IN_REPAIR',NULL);
 /*!40000 ALTER TABLE `vehicle` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -238,4 +333,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-12  9:59:28
+-- Dump completed on 2026-01-25 18:39:18

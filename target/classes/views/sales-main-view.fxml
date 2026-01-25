@@ -13,74 +13,91 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="dealership.controllers.SalesMainController">
 
-    <!-- LEFT SIDEBAR -->
+    <!-- LEFT SIDEBAR  -->
     <left>
-        <VBox fx:id="sidebar"
-              prefWidth="360.0"
-              styleClass="sidebar"
-              BorderPane.alignment="CENTER">
+        <BorderPane prefWidth="360.0" styleClass="sidebar">
 
-            <Button fx:id="vehiclesButton"
-                    text="Vehicles"
-                    onAction="#handleVehicles"
-                    maxWidth="1.7976931348623157E308"
-                    maxHeight="1.7976931348623157E308"
-                    styleClass="sidebar-button"
-                    VBox.vgrow="ALWAYS"/>
+            <!-- CENTER: Main menu -->
+            <center>
+                <VBox fx:id="menuBox"
+                      styleClass="sidebar-menu"
+                      BorderPane.alignment="CENTER">
 
-            <Region styleClass="sidebar-divider"
-                    prefHeight="6.0" minHeight="6.0" maxHeight="6.0"/>
+                    <Button fx:id="vehiclesButton"
+                            text="Vehicles"
+                            onAction="#handleVehicles"
+                            maxWidth="1.7976931348623157E308"
+                            maxHeight="1.7976931348623157E308"
+                            styleClass="sidebar-button"
+                            VBox.vgrow="ALWAYS"/>
 
-            <Button fx:id="customersButton"
-                    text="Customers"
-                    onAction="#handleCustomers"
-                    maxWidth="1.7976931348623157E308"
-                    maxHeight="1.7976931348623157E308"
-                    styleClass="sidebar-button"
-                    VBox.vgrow="ALWAYS"/>
+                    <Region styleClass="sidebar-divider"
+                            prefHeight="6.0" minHeight="6.0" maxHeight="6.0"/>
 
-            <Region styleClass="sidebar-divider"
-                    prefHeight="6.0" minHeight="6.0" maxHeight="6.0"/>
+                    <Button fx:id="customersButton"
+                            text="Customers"
+                            onAction="#handleCustomers"
+                            maxWidth="1.7976931348623157E308"
+                            maxHeight="1.7976931348623157E308"
+                            styleClass="sidebar-button"
+                            VBox.vgrow="ALWAYS"/>
 
-            <Button fx:id="proposalsButton"
-                    text="Proposals"
-                    onAction="#handleProposals"
-                    maxWidth="1.7976931348623157E308"
-                    maxHeight="1.7976931348623157E308"
-                    styleClass="sidebar-button"
-                    VBox.vgrow="ALWAYS"/>
+                    <Region styleClass="sidebar-divider"
+                            prefHeight="6.0" minHeight="6.0" maxHeight="6.0"/>
 
-            <Region styleClass="sidebar-divider"
-                    prefHeight="6.0" minHeight="6.0" maxHeight="6.0"/>
+                    <Button fx:id="proposalsButton"
+                            text="Proposals"
+                            onAction="#handleProposals"
+                            maxWidth="1.7976931348623157E308"
+                            maxHeight="1.7976931348623157E308"
+                            styleClass="sidebar-button"
+                            VBox.vgrow="ALWAYS"/>
 
-            <Button fx:id="salesButton"
-                    text="Sales"
-                    onAction="#handleSales"
-                    maxWidth="1.7976931348623157E308"
-                    maxHeight="1.7976931348623157E308"
-                    styleClass="sidebar-button"
-                    VBox.vgrow="ALWAYS"/>
+                    <Region styleClass="sidebar-divider"
+                            prefHeight="6.0" minHeight="6.0" maxHeight="6.0"/>
 
-            <Region styleClass="sidebar-divider"
-                    prefHeight="6.0" minHeight="6.0" maxHeight="6.0"/>
+                    <Button fx:id="salesButton"
+                            text="Sales"
+                            onAction="#handleSales"
+                            maxWidth="1.7976931348623157E308"
+                            maxHeight="1.7976931348623157E308"
+                            styleClass="sidebar-button"
+                            VBox.vgrow="ALWAYS"/>
 
-            <Button fx:id="logoutButton"
-                    text="Log out"
-                    onAction="#handleLogout"
-                    maxWidth="1.7976931348623157E308"
-                    maxHeight="1.7976931348623157E308"
-                    styleClass="sidebar-button"
-                    VBox.vgrow="ALWAYS"/>
+                </VBox>
+            </center>
 
-        </VBox>
+            <!-- BOTTOM: Logout -->
+            <bottom>
+                <VBox fx:id="logoutBox"
+                      styleClass="sidebar-logout"
+                      BorderPane.alignment="BOTTOM_CENTER">
+
+                    <Region styleClass="sidebar-divider"
+                            prefHeight="6.0" minHeight="6.0" maxHeight="6.0"/>
+
+                    <Button fx:id="logoutButton"
+                            text="Log out"
+                            onAction="#handleLogout"
+                            maxWidth="1.7976931348623157E308"
+                            minHeight="54.0"
+                            prefHeight="54.0"
+                            maxHeight="54.0"
+                            styleClass="logout-button"/>
+
+                </VBox>
+            </bottom>
+
+        </BorderPane>
     </left>
 
     <!-- CENTER CONTENT -->
     <center>
         <StackPane fx:id="contentHolder"
                    styleClass="content-holder"
-                   BorderPane.alignment="CENTER" />
+                   BorderPane.alignment="CENTER"/>
     </center>
 
 </BorderPane>
+
 

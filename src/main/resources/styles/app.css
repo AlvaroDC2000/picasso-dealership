@@ -49,14 +49,35 @@
    SALES MODULE - SIDEBAR (match the wireframe)
    ========================================================= */
 
+/* Sidebar base */
 .sidebar {
     -fx-background-color: #2563EB;
 }
 
-.sidebar-divider {
-    -fx-background-color: white;
+/* Top menu container */
+.sidebar-menu {
+    -fx-background-color: transparent;
 }
 
+/* Bottom logout container */
+.sidebar-logout {
+    -fx-background-color: transparent;
+}
+
+/* Empty blue space between menu and logout */
+.sidebar-spacer {
+    -fx-background-color: transparent;
+}
+
+/* Thin white separators */
+.sidebar-divider {
+    -fx-background-color: white;
+    -fx-min-height: 6px;
+    -fx-pref-height: 6px;
+    -fx-max-height: 6px;
+}
+
+/* Main menu buttons */
 .sidebar-button {
     -fx-background-color: transparent;
     -fx-text-fill: white;
@@ -71,6 +92,23 @@
 .sidebar-button:hover {
     -fx-background-color: rgba(255, 255, 255, 0.12);
 }
+
+/* Smaller logout */
+.logout-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 28px;
+    -fx-font-weight: 400;
+    -fx-alignment: CENTER;
+    -fx-padding: 0;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+}
+
+.logout-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.12);
+}
+
 
 
 
@@ -123,4 +161,48 @@
 .table-row-cell:selected {
     -fx-background-color: rgba(37, 99, 235, 0.15);
 }
+
+
+.detail-label {
+    -fx-font-size: 34px;
+    -fx-font-weight: 800;
+}
+
+.detail-input {
+    -fx-font-size: 34px;
+    -fx-text-fill: #9aa0a6;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-padding: 0;
+}
+.detail-input:focused {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.content-title {
+    -fx-font-size: 36px;  
+    -fx-font-weight: 800;
+}
+
+/* Section title */
+.section-title {
+    -fx-font-size: 32px;  
+    -fx-font-weight: 800;
+    -fx-padding: 0 0 24 0; 
+}
+
+.detail-label {
+    -fx-font-size: 30px;  
+    -fx-font-weight: 800;
+}
+
+.detail-value {
+    -fx-font-size: 30px;
+    -fx-text-fill: #9aa0a6;
+}
+
+
 

@@ -1,18 +1,24 @@
 package dealership.controllers;
 
+import dealership.util.SalesNavigation;
 import dealership.util.SessionContext;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
- * Main controller for Sales role.
- * The sidebar is fixed and only the center content changes.
+ * Main controller for the Sales role.
+ * <p>
+ * This controller manages the sales main layout, where the sidebar remains fixed
+ * and only the center content changes. It uses {@link SalesNavigation} to load
+ * different screens inside the central content holder.
+ * </p>
  */
 public class SalesMainController {
 
@@ -36,66 +42,83 @@ public class SalesMainController {
 
     /**
      * Called automatically when the view is loaded.
-     * Loads the default dashboard.
+     * <p>
+     * It registers the content holder for navigation and loads the default
+     * sales screen.
+     * </p>
      */
     @FXML
     private void initialize() {
-        loadCenter("/views/sales-dashboard-view.fxml");
+        // Register holder for navigation
+        SalesNavigation.setContentHolder(contentHolder);
+
+        // Default screen
+        SalesNavigation.loadCenter("/views/sales-vehicles-view.fxml");
     }
 
     /**
-     * Show vehicles / stock view.
+     * Handles navigation to the vehicles screen.
+     *
+     * @param event the button action event
      */
     @FXML
     private void handleVehicles(ActionEvent event) {
-        loadCenter("/views/sales-dashboard-view.fxml");
+        SalesNavigation.loadCenter("/views/sales-vehicles-view.fxml");
     }
 
     /**
-     * Show customers list.
+     * Handles navigation to the customers screen.
+     *
+     * @param event the button action event
      */
     @FXML
     private void handleCustomers(ActionEvent event) {
-        loadCenter("/views/sales-dashboard-view.fxml");
+        SalesNavigation.loadCenter("/views/sales-customers-view.fxml");
     }
 
     /**
-     * Show proposals list.
+     * Handles navigation to the proposals screen.
+     *
+     * @param event the button action event
      */
     @FXML
     private void handleProposals(ActionEvent event) {
-        loadCenter("/views/sales-dashboard-view.fxml");
+        SalesNavigation.loadCenter("/views/sales-proposals-view.fxml");
     }
 
     /**
-     * Show sales list.
+     * Handles navigation to the sales screen.
+     *
+     * @param event the button action event
      */
     @FXML
     private void handleSales(ActionEvent event) {
-        loadCenter("/views/sales-dashboard-view.fxml");
+        SalesNavigation.loadCenter("/views/sales-sales-view.fxml");
     }
 
     /**
-     * Logout and return to login screen.
+     * Handles logout action for the sales user.
+     * <p>
+     * It clears the current {@link SessionContext} and loads the login screen
+     * into the same stage.
+     * </p>
+     *
+     * @param event the button action event
      */
     @FXML
     private void handleLogout(ActionEvent event) {
         try {
-            // Clear session data
             SessionContext.clear();
 
-            // Get current window
             Stage stage = (Stage) ((Node) event.getSource())
                     .getScene()
                     .getWindow();
 
-            // Load login view
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/views/login-view.fxml")
             );
             Scene scene = new Scene(loader.load());
 
-            // Apply global styles
             if (getClass().getResource("/styles/app.css") != null) {
                 scene.getStylesheets().add(
                         getClass().getResource("/styles/app.css").toExternalForm()
@@ -107,24 +130,21 @@ public class SalesMainController {
 
         } catch (Exception e) {
             e.printStackTrace();
+            showError("Logout error", "Could not load login screen.");
         }
     }
 
     /**
-     * Loads a view inside the center content area.
+     * Shows an error dialog with the given title and message.
+     *
+     * @param title the dialog title
+     * @param message the message to display
      */
-    private void loadCenter(String fxmlPath) {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource(fxmlPath)
-            );
-            Node view = loader.load();
-
-            contentHolder.getChildren().setAll(view);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void showError(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
-

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="650.0"
+            prefWidth="740.0"
+            styleClass="content-root"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="dealership.controllers.SalesVehiclesController">
+
+    <center>
+        <VBox spacing="18.0" style="-fx-padding: 24;">
+
+            <!-- Title -->
+            <Label text="Vehicles" styleClass="content-title"/>
+
+            <!-- Search bar -->
+            <HBox spacing="12.0" alignment="CENTER_LEFT">
+                <TextField fx:id="searchField"
+                           promptText="Search by model"
+                           styleClass="field"
+                           HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <!-- Table -->
+            <TableView fx:id="vehiclesTable" prefHeight="520.0">
+                <columns>
+                    <TableColumn fx:id="plateCol" text="Plate" prefWidth="140.0"/>
+                    <TableColumn fx:id="vehicleCol" text="Vehicle" prefWidth="320.0"/>
+                    <TableColumn fx:id="dateAddedCol" text="Date added" prefWidth="160.0"/>
+                    <TableColumn fx:id="actionCol" text="Action" prefWidth="120.0"/>
+                </columns>
+            </TableView>
+
+        </VBox>
+    </center>
+
+</BorderPane>
+

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="650.0"
+            prefWidth="740.0"
+            styleClass="content-root"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="dealership.controllers.SalesVehicleDetailController">
+
+    <center>
+        <VBox spacing="18.0" style="-fx-padding: 24;">
+
+            <!-- Header -->
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Vehicle details" styleClass="content-title"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Button text="&lt;" onAction="#handleBack" styleClass="btn-back"/>
+            </HBox>
+
+            <!-- Main card -->
+            <HBox spacing="0.0" style="-fx-background-color: white;">
+
+                <!-- Left column -->
+                <VBox spacing="16.0" style="-fx-padding: 24;" prefWidth="320.0">
+
+                    <VBox spacing="4.0">
+                        <Label text="Plate" style="-fx-font-weight: bold;"/>
+                        <Label fx:id="plateValue" text="-"/>
+                    </VBox>
+
+                    <VBox spacing="4.0">
+                        <Label text="Brand" style="-fx-font-weight: bold;"/>
+                        <Label fx:id="brandValue" text="-"/>
+                    </VBox>
+
+                    <VBox spacing="4.0">
+                        <Label text="Model" style="-fx-font-weight: bold;"/>
+                        <Label fx:id="modelValue" text="-"/>
+                    </VBox>
+
+                    <VBox spacing="4.0">
+                        <Label text="Year" style="-fx-font-weight: bold;"/>
+                        <Label fx:id="yearValue" text="-"/>
+                    </VBox>
+
+                    <VBox spacing="4.0">
+                        <Label text="Color" style="-fx-font-weight: bold;"/>
+                        <Label fx:id="colorValue" text="-"/>
+                    </VBox>
+
+                    <VBox spacing="4.0">
+                        <Label text="Mileage" style="-fx-font-weight: bold;"/>
+                        <Label fx:id="mileageValue" text="-"/>
+                    </VBox>
+
+                </VBox>
+
+                <!-- Divider -->
+                <Separator orientation="VERTICAL"/>
+
+                <!-- Right column (new fields) -->
+                <VBox spacing="16.0" style="-fx-padding: 24;" prefWidth="320.0">
+
+                    <VBox spacing="4.0">
+                        <Label text="Type" style="-fx-font-weight: bold;"/>
+                        <Label fx:id="typeValue" text="-"/>
+                    </VBox>
+
+                    <VBox spacing="4.0">
+                        <Label text="Fuel" style="-fx-font-weight: bold;"/>
+                        <Label fx:id="fuelValue" text="-"/>
+                    </VBox>
+
+                    <VBox spacing="4.0">
+                        <Label text="Transmission" style="-fx-font-weight: bold;"/>
+                        <Label fx:id="transmissionValue" text="-"/>
+                    </VBox>
+
+                    <VBox spacing="4.0">
+                        <Label text="Doors" style="-fx-font-weight: bold;"/>
+                        <Label fx:id="doorsValue" text="-"/>
+                    </VBox>
+
+                    <VBox spacing="4.0">
+                        <Label text="Date added" style="-fx-font-weight: bold;"/>
+                        <Label fx:id="dateAddedValue" text="-"/>
+                    </VBox>
+
+                </VBox>
+
+            </HBox>
+
+            <!-- Notes -->
+            <VBox spacing="10.0" style="-fx-background-color: white; -fx-padding: 24;">
+                <Label text="Notes" style="-fx-font-weight: bold;"/>
+                <Label fx:id="notesValue" wrapText="true" text="-"/>
+            </VBox>
+
+        </VBox>
+    </center>
+
+</BorderPane>
