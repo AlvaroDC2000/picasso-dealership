@@ -12,7 +12,7 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="dealership.controllers.CustomerDetailsController">
 
-    <!-- LOGO (top-right) -->
+    <!-- LOGO  -->
     <ImageView fitHeight="100"
                preserveRatio="true"
                pickOnBounds="true"

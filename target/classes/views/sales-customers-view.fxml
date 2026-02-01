@@ -20,14 +20,14 @@
     <center>
         <VBox spacing="18.0" style="-fx-padding: 24;">
 
-            <!-- Header (igual que Proposals: título con HBox) -->
+            <!-- Header  -->
             <HBox alignment="CENTER_LEFT">
                 <Label text="Customers" styleClass="content-title"/>
                 <Pane HBox.hgrow="ALWAYS"/>
                 <fx:include source="/views/sales-header.fxml"/>
             </HBox>
 
-            <!-- Card blanco (buscador + tabla juntos) -->
+            <!-- Card blanco  -->
             <VBox spacing="12.0" style="-fx-background-color: white; -fx-padding: 18;">
 
                 <!-- Search bar -->
@@ -50,7 +50,7 @@
 
             </VBox>
 
-            <!-- Bottom button (misma estética que Proposals + a la derecha) -->
+            <!-- Bottom button  -->
             <HBox>
                 <Pane HBox.hgrow="ALWAYS"/>
                 <Button text="New customer"

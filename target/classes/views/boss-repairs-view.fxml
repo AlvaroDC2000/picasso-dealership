@@ -14,7 +14,7 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="dealership.controllers.BossRepairsController">
 
-    <!-- LOGO (top-right) -->
+    <!-- LOGO  -->
     <ImageView fitHeight="100"
                preserveRatio="true"
                pickOnBounds="true"

@@ -24,7 +24,7 @@ import java.util.Locale;
  */
 public class SalesVehicleDetailController {
 
-    // Left
+
     @FXML private Label plateValue;
     @FXML private Label brandValue;
     @FXML private Label modelValue;
@@ -32,14 +32,14 @@ public class SalesVehicleDetailController {
     @FXML private Label colorValue;
     @FXML private Label mileageValue;
 
-    // Right (Figma)
+    
     @FXML private Label typeValue;
     @FXML private Label fuelValue;
     @FXML private Label transmissionValue;
     @FXML private Label doorsValue;
     @FXML private Label dateAddedValue;
 
-    // Notes
+
     @FXML private Label notesValue;
 
     private final VehicleDao vehicleDao = new VehicleDao();

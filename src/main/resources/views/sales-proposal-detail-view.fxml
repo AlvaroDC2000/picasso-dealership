@@ -27,7 +27,7 @@
                 <Button text="‹" onAction="#handleBack" styleClass="btn-back-mech"/>
             </HBox>
 
-            <!-- Main card (info) -->
+            <!-- Main card -->
             <VBox spacing="26.0" style="-fx-background-color: white; -fx-padding: 56 70 56 70;">
 
                 <HBox spacing="14.0" alignment="CENTER_LEFT">

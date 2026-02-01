@@ -40,7 +40,6 @@
                     <TextField fx:id="emailField" prefHeight="92.0" prefWidth="559.0" promptText="e.g. laura@gmail.com" style="-fx-font-size: 20;" HBox.hgrow="ALWAYS" />
                 </HBox>
 
-                <!-- Required by DB -->
                 <HBox alignment="CENTER_LEFT" spacing="14.0">
                     <Label prefHeight="49.0" prefWidth="160.0" style="-fx-font-weight: bold; -fx-font-size: 22;" text="DNI:" />
                     <TextField fx:id="dniField" prefHeight="92.0" prefWidth="575.0" promptText="e.g. 12345678A" style="-fx-font-size: 20;" HBox.hgrow="ALWAYS" />
