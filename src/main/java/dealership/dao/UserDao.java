@@ -2,8 +2,8 @@ package dealership.dao;
 
 import dealership.controllers.RegisterRepairController.IdName;
 import dealership.model.AuthUser;
-import dealership.util.DbConnection;
 import dealership.model.MechanicSkillRow;
+import dealership.util.DbConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,14 +11,13 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Data Access Object for user-related operations.
  * <p>
- * This DAO contains the database logic for authentication and for retrieving
- * mechanic data used across the application (combo boxes, boss views, and skills
- * editing). It also includes permission checks based on boss dealership in the
- * boss mechanic skills flow.
+ * This class contains database queries related to authentication and mechanics management.
+ * It is used by:
+ * - Login: authenticate user and get role/dealership data.
+ * - Boss mechanic screens: list mechanics, read skills, and update skills.
  * </p>
  */
 public class UserDao {
@@ -26,12 +25,12 @@ public class UserDao {
     /**
      * SQL query used for user authentication (login).
      * <p>
-     * It returns the user ID and role name for active users matching username
+     * It returns the user ID, dealership ID and role name for active users matching username
      * and password hash.
      * </p>
      */
     private static final String SQL_LOGIN =
-            "SELECT u.id, r.name AS role_name " +
+            "SELECT u.id, u.dealership_id, r.name AS role_name " +
             "FROM `user` u " +
             "JOIN role r ON r.id = u.role_id " +
             "WHERE u.username = ? " +
@@ -39,7 +38,7 @@ public class UserDao {
             "  AND u.is_active = 1";
 
     /**
-     * SQL query used to retrieve active mechanics (for combo boxes).
+     * SQL query used to retrieve active mechanics for combo boxes.
      */
     private static final String SQL_ACTIVE_MECHANICS =
             "SELECT u.id, u.full_name " +
@@ -50,15 +49,17 @@ public class UserDao {
             "ORDER BY u.full_name ASC";
 
     /**
-     * Authenticates a user using username and password.
+     * Authenticates a user by username and password.
      * <p>
-     * If credentials are valid and the user is active, it returns an {@link AuthUser}
-     * containing the user ID and role name. Otherwise, it returns null.
+     * If a matching active user is found, it returns an {@link AuthUser} with:
+     * - user id
+     * - dealership id
+     * - role name
      * </p>
      *
-     * @param username the username entered in the login form
-     * @param password the password entered in the login form
-     * @return an {@link AuthUser} if authentication is successful, or null if invalid
+     * @param username username entered in the login form
+     * @param password password entered in the login form
+     * @return AuthUser if credentials are valid, null otherwise
      * @throws Exception if a database access error occurs
      */
     public AuthUser authenticate(String username, String password) throws Exception {
@@ -72,8 +73,13 @@ public class UserDao {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     int userId = rs.getInt("id");
+                    int dealershipId = rs.getInt("dealership_id"); // 0 if NULL, but it should not be NULL
                     String roleName = rs.getString("role_name");
-                    return new AuthUser(userId, roleName != null ? roleName.trim() : "");
+                    return new AuthUser(
+                            userId,
+                            dealershipId,
+                            roleName != null ? roleName.trim() : ""
+                    );
                 }
             }
         }
@@ -82,13 +88,14 @@ public class UserDao {
     }
 
     /**
-     * Retrieves a list of active mechanics formatted for combo boxes.
+     * Returns all active mechanics for UI combo boxes.
      * <p>
-     * Each mechanic is returned as an {@link IdName} pair with the user ID and full name.
-     * If the name is missing, a fallback label is used.
+     * Each item is formatted as {@link IdName}, where:
+     * - id = mechanic user id
+     * - name = mechanic full name (fallback: "Mechanic #id")
      * </p>
      *
-     * @return list of active mechanics for selection controls
+     * @return list of active mechanics as IdName
      * @throws Exception if a database access error occurs
      */
     public List<IdName> findActiveMechanicsForCombo() throws Exception {
@@ -108,16 +115,16 @@ public class UserDao {
 
         return mechanics;
     }
-    
+
     /**
-     * Retrieves mechanics from the same dealership as the given boss, including their skills.
+     * Retrieves mechanics from the same dealership as the boss user.
      * <p>
-     * This method is used by the boss skills overview screen. The boss ID is used to
-     * resolve the dealership and filter mechanics accordingly.
+     * This method is used for Boss -> Mechanics and skills list.
+     * It includes the mechanic skills and active/inactive status.
      * </p>
      *
-     * @param bossId the boss user ID used to determine dealership scope
-     * @return list of mechanics with skills and active status text
+     * @param bossId boss user id (used to resolve dealership)
+     * @return list of mechanics with skills and status
      * @throws Exception if a database access error occurs
      */
     public List<MechanicSkillRow> findMechanicsWithSkillsForBossDealership(int bossId) throws Exception {
@@ -158,17 +165,13 @@ public class UserDao {
         return list;
     }
 
-
     /**
-     * Retrieves the skills text for a specific mechanic within the boss dealership.
-     * <p>
-     * The boss ID is used to validate that the mechanic belongs to the same dealership.
-     * If the mechanic is not found or the boss has no permissions, this method returns null.
-     * </p>
+     * Loads the skills text for a mechanic, but only if the boss and mechanic
+     * belong to the same dealership.
      *
-     * @param bossId the boss user ID used for dealership validation
-     * @param mechanicId the mechanic user ID whose skills will be loaded
-     * @return the skills text (trimmed), empty string if null in DB, or null if not found/no permissions
+     * @param bossId boss user id (used to validate dealership permissions)
+     * @param mechanicId mechanic user id to load
+     * @return skills text (trimmed) or empty string if skills is NULL, or null if not found / no permissions
      * @throws Exception if a database access error occurs
      */
     public String findMechanicSkillsForBossDealership(int bossId, int mechanicId) throws Exception {
@@ -199,18 +202,14 @@ public class UserDao {
         return null;
     }
 
-
     /**
-     * Updates the skills text for a mechanic within the boss dealership.
-     * <p>
-     * The update only happens if the target user is a mechanic and belongs to the same
-     * dealership as the boss. The method returns true when a row was actually updated.
-     * </p>
+     * Updates a mechanic skills text, but only if the boss and mechanic belong
+     * to the same dealership.
      *
-     * @param bossId the boss user ID used for dealership validation
-     * @param mechanicId the mechanic user ID to update
-     * @param skills the new skills text to store
-     * @return true if the update affected at least one row, false otherwise
+     * @param bossId boss user id (used to validate dealership permissions)
+     * @param mechanicId mechanic user id to update
+     * @param skills new skills text to save
+     * @return true if updated, false if no rows were updated (not found or no permissions)
      * @throws Exception if a database access error occurs
      */
     public boolean updateMechanicSkillsForBossDealership(int bossId, int mechanicId, String skills) throws Exception {
@@ -234,5 +233,4 @@ public class UserDao {
             return stmt.executeUpdate() > 0;
         }
     }
-
 }

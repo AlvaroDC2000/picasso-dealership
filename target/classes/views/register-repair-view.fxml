@@ -4,6 +4,8 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -13,14 +15,24 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="dealership.controllers.RegisterRepairController">
 
-    <Button layoutX="1040" layoutY="25"
-            prefWidth="40" prefHeight="40"
-            text="&lt;"
-            onAction="#handleBack"
-            style="-fx-background-color: transparent;
-                   -fx-text-fill: #2563EB;
-                   -fx-font-size: 22px;
-                   -fx-font-weight: 700;" />
+    <!-- LOGO (top-right) -->
+    <ImageView fitHeight="100"
+               preserveRatio="true"
+               pickOnBounds="true"
+               AnchorPane.topAnchor="18"
+               AnchorPane.rightAnchor="24">
+        <image>
+            <Image url="@/images/LogoConcesionario.png"/>
+        </image>
+    </ImageView>
+
+    <Button fx:id="backButton"
+        layoutX="1040" layoutY="25"
+        prefWidth="40" prefHeight="40"
+        text="‹"
+        onAction="#handleBack"
+        styleClass="btn-back-mech" />
+    
 
     <Label layoutX="270" layoutY="40"
            text="Register new repair"
@@ -94,3 +106,4 @@
     </VBox>
 
 </AnchorPane>
+

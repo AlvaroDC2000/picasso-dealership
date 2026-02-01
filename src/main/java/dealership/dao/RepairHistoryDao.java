@@ -62,7 +62,8 @@ public class RepairHistoryDao {
                 while (rs.next()) {
                     int repairId = rs.getInt("repair_id");
                     String vehicle = rs.getString("vehicle");
-                    String status = rs.getString("status");
+                    @SuppressWarnings("unused")
+					String status = rs.getString("status");
                     String date = rs.getString("end_date");
 
                     if (date == null) date = "-";

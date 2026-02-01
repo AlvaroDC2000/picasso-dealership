@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="650.0"
+            prefWidth="740.0"
+            styleClass="content-root"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="dealership.controllers.SalesSalesController">
+
+    <center>
+        <VBox spacing="18.0" style="-fx-padding: 24;">
+
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Sales" styleClass="content-title"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <fx:include source="/views/sales-header.fxml"/>
+            </HBox>
+
+            <VBox spacing="12.0" style="-fx-background-color: white; -fx-padding: 18;">
+
+                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                    <Label text="🔍" style="-fx-font-size: 16;"/>
+                    <TextField fx:id="searchField" promptText="Search by name" HBox.hgrow="ALWAYS"/>
+                </HBox>
+
+                <TableView fx:id="salesTable" prefHeight="460.0">
+                    <columns>
+                        <TableColumn fx:id="saleIdCol" text="Sale ID" prefWidth="110.0"/>
+                        <TableColumn fx:id="vehicleCol" text="Vehicle" prefWidth="290.0"/>
+                        <TableColumn fx:id="customerCol" text="Customer" prefWidth="160.0"/>
+                        <TableColumn fx:id="priceCol" text="Price (€)" prefWidth="100.0"/>
+                        <TableColumn fx:id="actionCol" text="Action" prefWidth="90.0"/>
+                    </columns>
+                </TableView>
+
+            </VBox>
+
+        </VBox>
+    </center>
+
+</BorderPane>
+

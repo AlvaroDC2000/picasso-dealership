@@ -17,28 +17,23 @@ import javafx.stage.Stage;
 /**
  * Controller for the login screen.
  * <p>
- * This controller validates user input, authenticates the user through {@link UserDao},
- * stores session data in {@link SessionContext}, and redirects the user to the correct
- * view depending on the role returned by the authentication process.
+ * It validates user input, authenticates the user against the database,
+ * stores the session information and redirects the user to the correct
+ * module depending on their role.
  * </p>
  */
 public class LoginController {
 
-    @FXML
-    private TextField usernameField;
-
-    @FXML
-    private PasswordField passwordField;
-
-    @FXML
-    private Label errorLabel;
+    @FXML private TextField usernameField;
+    @FXML private PasswordField passwordField;
+    @FXML private Label errorLabel;
 
     /**
      * Handles the login button action.
      * <p>
-     * It reads the username and password fields, performs basic validation,
-     * calls the authentication method, stores session information and then
-     * navigates to the correct view depending on the resolved role.
+     * This method reads username and password, performs basic validation,
+     * authenticates the user, stores the session (including dealership id),
+     * and loads the correct view based on the resolved role.
      * </p>
      *
      * @param event the action event triggered by the login button
@@ -65,14 +60,13 @@ public class LoginController {
                 return;
             }
 
-            // Guarda la sesión
+            // Store session (IMPORTANT: include dealershipId)
             SessionContext.setUserId(user.getId());
+            SessionContext.setDealershipId(user.getDealershipId());
             SessionContext.setRoleName(user.getRoleName());
 
-            // Resuelve el rol
             String role = normalizeRole(user.getRoleName());
 
-            // Navigación
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
             if ("MECHANIC".equals(role)) {
@@ -103,32 +97,26 @@ public class LoginController {
     }
 
     /**
-     * Normalizes a role name to a safe comparable value.
-     * <p>
-     * This method trims the input and converts it to uppercase. If the role name
-     * is null, it returns an empty string.
-     * </p>
+     * Normalizes a role name into a safe uppercase value.
      *
-     * @param roleName the original role name coming from the database/user
-     * @return the normalized role name in uppercase (or empty string if null)
+     * @param roleName the role name returned by the database
+     * @return the normalized role string, or empty string if null
      */
     private String normalizeRole(String roleName) {
-        if (roleName == null) {
-            return "";
-        }
+        if (roleName == null) return "";
         return roleName.trim().toUpperCase();
     }
 
     /**
      * Loads an FXML view into the given stage.
      * <p>
-     * The view is loaded using {@link FXMLLoader}. If the main stylesheet exists,
-     * it is applied to the new scene as well.
+     * This method creates a new {@link Scene}, applies the main application
+     * stylesheet if available, and shows the stage.
      * </p>
      *
-     * @param stage the current application stage
-     * @param fxmlPath the FXML path to be loaded
-     * @throws Exception if the FXML file or resources cannot be loaded
+     * @param stage the stage where the view will be displayed
+     * @param fxmlPath the path to the FXML file to load
+     * @throws Exception if the FXML cannot be loaded
      */
     private void loadView(Stage stage, String fxmlPath) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -144,3 +132,4 @@ public class LoginController {
         stage.show();
     }
 }
+

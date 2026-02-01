@@ -16,6 +16,9 @@ import java.util.List;
  * Data Access Object for vehicle-related queries.
  * <p>
  * This DAO is used to retrieve vehicle data from the database.
+ * It is shared between modules:
+ * - Repairs module: load vehicles for combo boxes.
+ * - Sales module: list vehicles and view full vehicle detail.
  * </p>
  */
 public class VehicleDao {
@@ -104,14 +107,24 @@ public class VehicleDao {
         return list;
     }
 
+    /**
+     * Builds a readable vehicle label for table rows (brand + model + color + year).
+     * <p>
+     * It is used only inside this DAO to keep the query results clean and the UI consistent.
+     * </p>
+     *
+     * @param brand vehicle brand (can be null)
+     * @param model vehicle model (can be null)
+     * @param color vehicle color (can be null)
+     * @param year  vehicle year (can be null)
+     * @return formatted vehicle text or "-" if everything is empty
+     */
     private String buildVehicleText(String brand, String model, String color, Integer year) {
         String brandText = (brand != null) ? brand : "";
         String modelText = (model != null) ? model : "";
         String colorText = (color != null) ? color : "";
         String yearText = (year != null) ? String.valueOf(year) : "";
 
-        // Format: "Brand Model Color Year"
-        // Example: "Ford Fiesta Black 2017"
         String text = (brandText + " " + modelText + " " + colorText + " " + yearText).trim();
 
         return text.isBlank() ? "-" : text;
@@ -160,5 +173,4 @@ public class VehicleDao {
         }
     }
 }
-
 

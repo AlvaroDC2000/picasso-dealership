@@ -4,26 +4,58 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="800" prefWidth="1100.0" styleClass="root" 
-			xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" 
-			fx:controller="dealership.controllers.MechanicHistoryController">
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="dealership.controllers.MechanicHistoryController">
 
-    <Button fx:id="backButton" layoutX="1040" layoutY="25" onAction="#handleBack" prefHeight="40" prefWidth="40" style="-fx-background-color: transparent;                    -fx-text-fill: #2563EB;                    -fx-font-size: 34px;                    -fx-font-weight: 700;                    -fx-padding: 0;" text="‹" />
+    <!-- LOGO (top-right) -->
+    <ImageView fitHeight="100"
+               preserveRatio="true"
+               pickOnBounds="true"
+               AnchorPane.topAnchor="18"
+               AnchorPane.rightAnchor="24">
+        <image>
+            <Image url="@/images/LogoConcesionario.png"/>
+        </image>
+    </ImageView>
 
-    <Label layoutX="40" layoutY="30" style="-fx-font-size: 42px; -fx-font-weight: 700;" text="History" />
+    <Button fx:id="backButton"
+        layoutX="1040" layoutY="25"
+        prefWidth="40" prefHeight="40"
+        text="‹"
+        onAction="#handleBack"
+        styleClass="btn-back-mech" />
 
-    <VBox layoutX="108.0" layoutY="120" prefHeight="590.0" prefWidth="886.0" spacing="10" style="-fx-background-color: white;                  -fx-border-color: #E6EAF0;                  -fx-border-radius: 8px;                  -fx-background-radius: 8px;">
+    <Label layoutX="40" layoutY="30"
+           text="History"
+           style="-fx-font-size: 42px; -fx-font-weight: 700;" />
+
+    <VBox layoutX="108.0" layoutY="120"
+          prefHeight="590.0" prefWidth="886.0"
+          spacing="10"
+          style="-fx-background-color: white;
+                 -fx-border-color: #E6EAF0;
+                 -fx-border-radius: 8px;
+                 -fx-background-radius: 8px;">
 
         <HBox style="-fx-padding: 30 30 10 30;">
-            <Label style="-fx-font-size: 32px; -fx-font-weight: 700;" text="Repair history table" />
+            <Label text="Repair history table"
+                   style="-fx-font-size: 32px; -fx-font-weight: 700;" />
         </HBox>
 
-        <VBox prefWidth="841.0" spacing="10" style="-fx-padding: 0 30 30 30;">
-            <TableView fx:id="historyTable" prefHeight="520" style="-fx-border-color: #E6EAF0;">
+        <VBox prefWidth="841.0"
+              spacing="10"
+              style="-fx-padding: 0 30 30 30;">
+            <TableView fx:id="historyTable"
+                       prefHeight="520"
+                       style="-fx-border-color: #E6EAF0;">
                 <columns>
                     <TableColumn fx:id="repairIdColumn" prefWidth="140" text="Repair ID" />
                     <TableColumn fx:id="vehicleColumn" prefWidth="360" text="Vehicle" />
@@ -36,3 +68,4 @@
     </VBox>
 
 </AnchorPane>
+

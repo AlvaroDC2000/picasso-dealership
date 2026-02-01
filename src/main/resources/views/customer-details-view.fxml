@@ -2,6 +2,8 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -10,16 +12,23 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="dealership.controllers.CustomerDetailsController">
 
+    <!-- LOGO (top-right) -->
+    <ImageView fitHeight="100"
+               preserveRatio="true"
+               pickOnBounds="true"
+               AnchorPane.topAnchor="18"
+               AnchorPane.rightAnchor="24">
+        <image>
+            <Image url="@/images/LogoConcesionario.png"/>
+        </image>
+    </ImageView>
+
     <Button fx:id="backButton"
-            layoutX="1040" layoutY="25"
-            prefWidth="40" prefHeight="40"
-            onAction="#handleBack"
-            text="‹"
-            style="-fx-background-color: transparent;
-                   -fx-text-fill: #2563EB;
-                   -fx-font-size: 34px;
-                   -fx-font-weight: 700;
-                   -fx-padding: 0;" />
+        layoutX="1040" layoutY="25"
+        prefWidth="40" prefHeight="40"
+        text="‹"
+        onAction="#handleBack"
+        styleClass="btn-back-mech" />
 
     <Label layoutX="300" layoutY="40"
            text="Customer details"
@@ -56,4 +65,5 @@
                    -fx-font-weight: 600;" />
 
 </AnchorPane>
+
 

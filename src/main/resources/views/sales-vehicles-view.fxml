@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane prefHeight="650.0"
@@ -19,28 +20,38 @@
         <VBox spacing="18.0" style="-fx-padding: 24;">
 
             <!-- Title -->
-            <Label text="Vehicles" styleClass="content-title"/>
-
-            <!-- Search bar -->
-            <HBox spacing="12.0" alignment="CENTER_LEFT">
-                <TextField fx:id="searchField"
-                           promptText="Search by model"
-                           styleClass="field"
-                           HBox.hgrow="ALWAYS"/>
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Vehicles" styleClass="content-title"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <fx:include source="/views/sales-header.fxml"/>
             </HBox>
 
-            <!-- Table -->
-            <TableView fx:id="vehiclesTable" prefHeight="520.0">
-                <columns>
-                    <TableColumn fx:id="plateCol" text="Plate" prefWidth="140.0"/>
-                    <TableColumn fx:id="vehicleCol" text="Vehicle" prefWidth="320.0"/>
-                    <TableColumn fx:id="dateAddedCol" text="Date added" prefWidth="160.0"/>
-                    <TableColumn fx:id="actionCol" text="Action" prefWidth="120.0"/>
-                </columns>
-            </TableView>
+            <VBox spacing="12.0" style="-fx-background-color: white; -fx-padding: 18;">
+
+                <!-- Search bar -->
+                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                    <Label text="🔍" style="-fx-font-size: 16;"/>
+                    <TextField fx:id="searchField"
+                               promptText="Search by model"
+                               HBox.hgrow="ALWAYS"/>
+                </HBox>
+
+                <!-- Table -->
+                <TableView fx:id="vehiclesTable" prefHeight="460.0">
+                    <columns>
+                        <TableColumn fx:id="plateCol" text="Plate" prefWidth="140.0"/>
+                        <TableColumn fx:id="vehicleCol" text="Vehicle" prefWidth="320.0"/>
+                        <TableColumn fx:id="dateAddedCol" text="Date added" prefWidth="160.0"/>
+                        <TableColumn fx:id="actionCol" text="Action" prefWidth="120.0"/>
+                    </columns>
+                </TableView>
+
+            </VBox>
 
         </VBox>
     </center>
 
 </BorderPane>
+
+
 

@@ -22,7 +22,8 @@
             <HBox alignment="CENTER_LEFT">
                 <Label text="Vehicle details" styleClass="content-title"/>
                 <Pane HBox.hgrow="ALWAYS"/>
-                <Button text="&lt;" onAction="#handleBack" styleClass="btn-back"/>
+                <fx:include source="/views/sales-header.fxml"/>
+                <Button text="‹" onAction="#handleBack" styleClass="btn-back-mech"/>
             </HBox>
 
             <!-- Main card -->
@@ -66,7 +67,7 @@
                 <!-- Divider -->
                 <Separator orientation="VERTICAL"/>
 
-                <!-- Right column (new fields) -->
+                <!-- Right column  -->
                 <VBox spacing="16.0" style="-fx-padding: 24;" prefWidth="320.0">
 
                     <VBox spacing="4.0">

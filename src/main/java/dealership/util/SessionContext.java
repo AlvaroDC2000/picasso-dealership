@@ -4,14 +4,19 @@ package dealership.util;
  * Utility class used to store session-related information.
  * <p>
  * This context keeps track of the currently logged-in user by storing
- * the user ID and role name in memory. It is accessed statically from
+ * the user ID, dealership ID and role name in memory. It is accessed statically from
  * different controllers to determine permissions and navigation flow.
  * </p>
  */
 public class SessionContext {
 
     private static Integer userId;
+    private static Integer dealershipId;
     private static String roleName;
+
+    private SessionContext() {
+        // Utility class
+    }
 
     /**
      * Returns the current user ID stored in the session.
@@ -29,6 +34,24 @@ public class SessionContext {
      */
     public static void setUserId(Integer userId) {
         SessionContext.userId = userId;
+    }
+
+    /**
+     * Returns the current dealership ID stored in the session.
+     *
+     * @return the dealership ID, or null if no session is active
+     */
+    public static Integer getDealershipId() {
+        return dealershipId;
+    }
+
+    /**
+     * Sets the current dealership ID in the session.
+     *
+     * @param dealershipId the dealership ID to store
+     */
+    public static void setDealershipId(Integer dealershipId) {
+        SessionContext.dealershipId = dealershipId;
     }
 
     /**
@@ -58,7 +81,10 @@ public class SessionContext {
      */
     public static void clear() {
         userId = null;
+        dealershipId = null;
         roleName = null;
     }
 }
+
+
 

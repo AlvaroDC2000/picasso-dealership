@@ -67,7 +67,7 @@
                 </VBox>
             </center>
 
-            <!-- BOTTOM: Logout -->
+            <!-- BOTTOM -->
             <bottom>
                 <VBox fx:id="logoutBox"
                       styleClass="sidebar-logout"

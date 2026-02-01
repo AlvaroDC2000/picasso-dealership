@@ -18,20 +18,28 @@
             fx:controller="dealership.controllers.SalesCustomersController">
 
     <center>
-        <VBox spacing="16.0" style="-fx-padding: 24;">
+        <VBox spacing="18.0" style="-fx-padding: 24;">
 
-            <!-- Title -->
-            <Label text="Customers" styleClass="content-title"/>
-
-            <!-- Search bar -->
-            <HBox spacing="10.0" alignment="CENTER_LEFT" style="-fx-background-color: white; -fx-padding: 10;">
-                <Label text="🔍" style="-fx-font-size: 16;"/>
-                <TextField fx:id="searchField" promptText="Search by name" HBox.hgrow="ALWAYS"/>
+            <!-- Header (igual que Proposals: título con HBox) -->
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Customers" styleClass="content-title"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <fx:include source="/views/sales-header.fxml"/>
             </HBox>
 
-            <!-- Table -->
-            <VBox style="-fx-background-color: white; -fx-padding: 14;">
-                <TableView fx:id="customersTable" prefHeight="420.0">
+            <!-- Card blanco (buscador + tabla juntos) -->
+            <VBox spacing="12.0" style="-fx-background-color: white; -fx-padding: 18;">
+
+                <!-- Search bar -->
+                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                    <Label text="🔍" style="-fx-font-size: 16;"/>
+                    <TextField fx:id="searchField"
+                               promptText="Search by name"
+                               HBox.hgrow="ALWAYS"/>
+                </HBox>
+
+                <!-- Table -->
+                <TableView fx:id="customersTable" prefHeight="460.0">
                     <columns>
                         <TableColumn fx:id="nameCol" text="Name" prefWidth="240.0"/>
                         <TableColumn fx:id="emailCol" text="Email" prefWidth="260.0"/>
@@ -39,12 +47,15 @@
                         <TableColumn fx:id="actionCol" text="Action" prefWidth="90.0"/>
                     </columns>
                 </TableView>
+
             </VBox>
 
-            <!-- Bottom button -->
+            <!-- Bottom button (misma estética que Proposals + a la derecha) -->
             <HBox>
                 <Pane HBox.hgrow="ALWAYS"/>
-                <Button text="New customer" onAction="#handleNewCustomer" styleClass="primary-button"/>
+                <Button text="New customer"
+                        onAction="#handleNewCustomer"
+                        styleClass="btn-primary"/>
             </HBox>
 
         </VBox>

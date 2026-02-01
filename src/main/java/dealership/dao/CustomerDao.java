@@ -13,51 +13,48 @@ import java.util.List;
 
 /**
  * Data Access Object for customer-related queries.
- * <p>
- * This DAO is used across modules:
- * - Repairs module: retrieve customers as IdName for combo boxes.
- * - Sales module: list customers, view detail, and create new customers.
- * </p>
+ *
+ * CRUD for Sales module:
+ * - Create: insertCustomer(...)
+ * - Read: findAllCustomersForSales(...), findCustomerDetailById(...)
+ * - Update: updateCustomer(...)
+ * - Delete (soft): deleteCustomerById(...) => sets active = 0
+ *
+ * Repairs module combos:
+ * - findAllCustomersForCombo(...)
  */
 public class CustomerDao {
 
-    /**
-     * SQL query used to retrieve all customers for combo boxes (repairs module).
-     */
     private static final String SQL_FIND_ALL_CUSTOMERS =
             "SELECT c.id, CONCAT(c.first_name, ' ', c.last_name, ' (', c.dni, ')') AS customer_name " +
             "FROM customer c " +
+            "WHERE c.active = 1 " +
             "ORDER BY c.id";
 
-    /**
-     * SQL query used to retrieve customers for Sales -> Customers list.
-     */
     private static final String SQL_FIND_ALL_CUSTOMERS_FOR_SALES =
             "SELECT c.id, c.first_name, c.last_name, c.email, c.phone " +
             "FROM customer c " +
+            "WHERE c.active = 1 " +
             "ORDER BY c.last_name ASC, c.first_name ASC, c.id ASC";
 
-    /**
-     * SQL query used to retrieve customer detail by id for Sales -> Customer detail view.
-     */
     private static final String SQL_FIND_CUSTOMER_DETAIL_BY_ID =
-            "SELECT c.id, c.dni, c.first_name, c.last_name, c.phone, c.email " +
+            "SELECT c.id, c.dni, c.first_name, c.last_name, c.phone, c.email, c.active " +
             "FROM customer c " +
             "WHERE c.id = ?";
 
-    /**
-     * SQL query used to insert a new customer (Sales -> New customer).
-     */
     private static final String SQL_INSERT_CUSTOMER =
-            "INSERT INTO customer (dni, first_name, last_name, phone, email) " +
-            "VALUES (?, ?, ?, ?, ?)";
+            "INSERT INTO customer (dni, first_name, last_name, phone, email, active) " +
+            "VALUES (?, ?, ?, ?, ?, 1)";
 
-    /**
-     * Retrieves all customers from the database for use in combo boxes.
-     *
-     * @return a list of customers formatted as {@link IdName} objects
-     * @throws Exception if a database access error occurs
-     */
+    private static final String SQL_UPDATE_CUSTOMER =
+            "UPDATE customer " +
+            "SET first_name = ?, last_name = ?, phone = ?, email = ? " +
+            "WHERE id = ?";
+
+    // Soft delete
+    private static final String SQL_SOFT_DELETE_CUSTOMER_BY_ID =
+            "UPDATE customer SET active = 0 WHERE id = ?";
+
     public List<IdName> findAllCustomersForCombo() throws Exception {
         List<IdName> list = new ArrayList<>();
 
@@ -75,12 +72,6 @@ public class CustomerDao {
         return list;
     }
 
-    /**
-     * Retrieves all customers for the Sales -> Customers table.
-     *
-     * @return list of customer rows for Sales
-     * @throws Exception if a database access error occurs
-     */
     public List<SalesCustomerRow> findAllCustomersForSales() throws Exception {
         List<SalesCustomerRow> list = new ArrayList<>();
 
@@ -108,13 +99,6 @@ public class CustomerDao {
         return list;
     }
 
-    /**
-     * Retrieves full customer information by its id.
-     *
-     * @param customerId customer id
-     * @return CustomerDetail object or null if not found
-     * @throws Exception if a database access error occurs
-     */
     public CustomerDetail findCustomerDetailById(int customerId) throws Exception {
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_FIND_CUSTOMER_DETAIL_BY_ID)) {
@@ -138,16 +122,6 @@ public class CustomerDao {
         }
     }
 
-    /**
-     * Inserts a new customer into the database.
-     *
-     * @param dni customer DNI (NOT NULL UNIQUE)
-     * @param firstName first name
-     * @param lastName last name
-     * @param phone phone number
-     * @param email email address
-     * @throws Exception if a database access error occurs
-     */
     public void insertCustomer(String dni, String firstName, String lastName, String phone, String email) throws Exception {
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_INSERT_CUSTOMER)) {
@@ -162,15 +136,44 @@ public class CustomerDao {
         }
     }
 
+    public boolean updateCustomer(int customerId, String firstName, String lastName, String phone, String email) throws Exception {
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQL_UPDATE_CUSTOMER)) {
+
+            ps.setString(1, firstName);
+            ps.setString(2, lastName);
+            ps.setString(3, phone);
+            ps.setString(4, email);
+            ps.setInt(5, customerId);
+
+            return ps.executeUpdate() > 0;
+        }
+    }
+
     /**
-     * Builds a full name string using first and last name.
+     * "Delete" customer (soft delete).
+     * It sets active = 0 to avoid FK constraint violations (repair_order, sales, etc.).
+     *
+     * @return true if updated, false otherwise
+     */
+    public boolean deleteCustomerById(int customerId) throws Exception {
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQL_SOFT_DELETE_CUSTOMER_BY_ID)) {
+
+            ps.setInt(1, customerId);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    /**
+     * Builds a readable full name from first and last name.
      * <p>
-     * This method trims values and ensures a non-empty display text is returned.
+     * It trims each part and returns "-" if both parts are empty.
      * </p>
      *
-     * @param firstName the customer first name
-     * @param lastName the customer last name
-     * @return a formatted full name, or "-" if empty
+     * @param firstName raw first name (can be null)
+     * @param lastName raw last name (can be null)
+     * @return a clean full name or "-" if empty
      */
     private String buildFullName(String firstName, String lastName) {
         String fn = (firstName != null) ? firstName.trim() : "";
@@ -180,15 +183,16 @@ public class CustomerDao {
     }
 
     /**
-     * Returns a safe text value for UI display.
+     * Returns a safe text value for table rendering.
      * <p>
-     * If the provided value is null or blank, a dash ("-") is returned.
+     * If the database value is null or blank, it returns "-".
      * </p>
      *
-     * @param value the original text value
-     * @return a safe text string
+     * @param value raw value from database
+     * @return sanitized string for UI usage
      */
     private String safeText(String value) {
         return (value == null || value.isBlank()) ? "-" : value;
     }
 }
+

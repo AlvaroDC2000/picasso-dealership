@@ -18,7 +18,8 @@
             <HBox alignment="CENTER_LEFT">
                 <Label styleClass="content-title" text="New customer" />
                 <Pane HBox.hgrow="ALWAYS" />
-                <Button onAction="#handleBack" styleClass="btn-back" text="&lt;" />
+                <fx:include source="/views/sales-header.fxml"/>
+                <Button text="‹" onAction="#handleBack" styleClass="btn-back-mech"/>
             </HBox>
 
             <!-- Form card -->
@@ -50,7 +51,7 @@
             <!-- Bottom right button -->
             <HBox>
                 <Pane HBox.hgrow="ALWAYS" />
-                <Button onAction="#handleCreateCustomer" style="-fx-padding: 16 40; -fx-font-size: 18;" styleClass="primary-button" text="Create customer" />
+                <Button onAction="#handleCreateCustomer" style="-fx-padding: 16 40;" styleClass="btn-primary" text="Create customer" />
             </HBox>
 
         </VBox>

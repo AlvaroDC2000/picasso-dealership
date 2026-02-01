@@ -4,29 +4,44 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="800" prefWidth="1100.0" styleClass="root"
+<AnchorPane prefHeight="800"
+            prefWidth="1100.0"
+            styleClass="root"
             xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="dealership.controllers.BossMechanicsSkillsController">
 
-    <Button fx:id="backButton"
-            layoutX="1040" layoutY="25"
-            prefWidth="40" prefHeight="40"
-            text="‹"
-            onAction="#handleBack"
-            style="-fx-background-color: transparent;
-                   -fx-text-fill: #2563EB;
-                   -fx-font-size: 34px;
-                   -fx-font-weight: 700;
-                   -fx-padding: 0;" />
+    <!-- Logo top-right -->
+    <ImageView fitHeight="100"
+               preserveRatio="true"
+               pickOnBounds="true"
+               AnchorPane.topAnchor="18"
+               AnchorPane.rightAnchor="24">
+        <image>
+            <Image url="@/images/LogoConcesionario.png"/>
+        </image>
+    </ImageView>
 
+    <!-- Back button -->
+    <Button fx:id="backButton"
+        layoutX="1040" layoutY="25"
+        prefWidth="40" prefHeight="40"
+        text="‹"
+        onAction="#handleBack"
+        styleClass="btn-back-mech" />
+    
+
+    <!-- Title -->
     <Label layoutX="70" layoutY="45"
            text="Mechanic and skills"
            style="-fx-font-size: 52px; -fx-font-weight: 800;" />
 
+    <!-- Main card -->
     <VBox layoutX="140" layoutY="150"
           prefWidth="820" prefHeight="600"
           spacing="18"
@@ -45,7 +60,8 @@
             </columns>
         </TableView>
 
-        <Label fx:id="errorLabel" text=""
+        <Label fx:id="errorLabel"
+               text=""
                wrapText="true"
                style="-fx-font-size: 16px; -fx-text-fill: #DC2626;" />
 
