@@ -18,21 +18,28 @@ import java.util.List;
  * - Load sale detail for the Sales -> Sale detail screen.
  * - Create a sale from an accepted proposal.
  * </p>
+ *
+ * <p>
+ * It maps raw database rows into UI-friendly models such as {@link SalesSaleRow}
+ * for tables and {@link SaleDetail} for detail screens.
+ * </p>
  */
 public class SaleDao {
 
     /**
      * SQL query used to retrieve all sales for the Sales -> Sales list table.
+     * We include sale_date and sort by date desc (and id desc as tie-breaker).
      */
     private static final String SQL_FIND_ALL_SALES =
             "SELECT s.id, " +
             "       CONCAT(v.brand, ' ', v.model, ' ', v.color, ' ', v.year) AS vehicle_text, " +
             "       CONCAT(c.first_name, ' ', c.last_name) AS customer_name, " +
-            "       s.price " +
+            "       s.price, " +
+            "       s.sale_date " +
             "FROM sale s " +
             "JOIN customer c ON s.customer_id = c.id " +
             "JOIN vehicle v ON s.vehicle_id = v.id " +
-            "ORDER BY s.id DESC";
+            "ORDER BY s.sale_date DESC, s.id DESC";
 
     /**
      * SQL query used to retrieve full sale information by id.
@@ -58,7 +65,13 @@ public class SaleDao {
 
     /**
      * Loads all sales for the Sales module table.
-     * Each row includes a formatted code (00001), vehicle, customer and price.
+     *
+     * <p>This method is used by the Sales -> Sales list screen. It retrieves sales
+     * joined with customer and vehicle information, then maps each row into a
+     * {@link SalesSaleRow} instance suitable for JavaFX table rendering.</p>
+     *
+     * <p>The sale code is derived from the sale ID and padded for display.
+     * The sale date is kept as a {@link LocalDate} to support correct sorting in the UI.</p>
      *
      * @return list of sales formatted for the Sales -> Sales table
      * @throws Exception if a database access error occurs
@@ -77,12 +90,16 @@ public class SaleDao {
                 String customer = rs.getString("customer_name");
                 BigDecimal price = rs.getBigDecimal("price");
 
+                Date saleDateSql = rs.getDate("sale_date");
+                LocalDate saleDate = (saleDateSql != null) ? saleDateSql.toLocalDate() : null;
+
                 list.add(new SalesSaleRow(
                         id,
                         code,
                         safeText(vehicle),
                         safeText(customer),
-                        formatPrice(price)
+                        formatPrice(price),
+                        saleDate
                 ));
             }
         }
@@ -93,8 +110,12 @@ public class SaleDao {
     /**
      * Loads full details for a single sale by its id.
      *
-     * @param saleId sale id
-     * @return SaleDetail instance or null if the sale does not exist
+     * <p>This method is used by the Sales -> Sale detail screen. It retrieves
+     * the core sale data along with display-friendly customer and vehicle text,
+     * then maps the result into a {@link SaleDetail} model.</p>
+     *
+     * @param saleId the sale identifier to look up
+     * @return a {@link SaleDetail} instance if found, or {@code null} if no matching sale exists
      * @throws Exception if a database access error occurs
      */
     public SaleDetail findSaleDetailById(int saleId) throws Exception {
@@ -130,8 +151,12 @@ public class SaleDao {
     /**
      * Creates a sale from a proposal (proposal_id must be unique in sale).
      *
-     * @param proposalId proposal id to be converted into a sale
-     * @param saleDate date to store as sale_date
+     * <p>This method is typically called after a proposal has been accepted.
+     * It inserts a new row into the {@code sale} table by copying fields
+     * from {@code sale_proposal} and applying the provided sale date.</p>
+     *
+     * @param proposalId the proposal identifier to convert into a sale
+     * @param saleDate the date to store as the sale date
      * @throws Exception if a database access error occurs
      */
     public void createSaleFromProposal(int proposalId, LocalDate saleDate) throws Exception {
@@ -148,6 +173,10 @@ public class SaleDao {
     /**
      * Returns a safe text value to avoid blank/null UI rendering.
      *
+     * <p>This helper normalizes database strings so UI tables and labels do not
+     * display empty values. It mirrors the formatting strategy used across
+     * the Sales DAOs.</p>
+     *
      * @param v raw value from database
      * @return "-" if null/blank, otherwise the original value
      */
@@ -156,16 +185,17 @@ public class SaleDao {
     }
 
     /**
-     * Formats a BigDecimal price for UI display.
-     * <p>
-     * It removes trailing zeros (ex: 12000.00 -> 12000) and returns "-" if null.
-     * </p>
+     * Formats a {@link BigDecimal} price for UI display.
+     *
+     * <p>This helper produces a plain string representation without trailing zeros,
+     * matching the formatting expected by the Sales tables.</p>
      *
      * @param price price value from database
-     * @return formatted price string for tables
+     * @return formatted price string, or "-" if the value is null
      */
     private String formatPrice(BigDecimal price) {
         if (price == null) return "-";
         return price.stripTrailingZeros().toPlainString();
     }
 }
+

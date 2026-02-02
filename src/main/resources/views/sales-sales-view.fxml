@@ -34,11 +34,12 @@
 
                 <TableView fx:id="salesTable" prefHeight="460.0">
                     <columns>
-                        <TableColumn fx:id="saleIdCol" text="Sale ID" prefWidth="110.0"/>
-                        <TableColumn fx:id="vehicleCol" text="Vehicle" prefWidth="290.0"/>
-                        <TableColumn fx:id="customerCol" text="Customer" prefWidth="160.0"/>
-                        <TableColumn fx:id="priceCol" text="Price (€)" prefWidth="100.0"/>
-                        <TableColumn fx:id="actionCol" text="Action" prefWidth="90.0"/>
+                        <TableColumn fx:id="saleIdCol" text="Sale ID" prefWidth="95.0"/>
+                        <TableColumn fx:id="vehicleCol" text="Vehicle" prefWidth="235.0"/>
+                        <TableColumn fx:id="customerCol" text="Customer" prefWidth="150.0"/>
+                        <TableColumn fx:id="priceCol" text="Price (€)" prefWidth="95.0"/>
+                        <TableColumn fx:id="saleDateCol" text="Sale date" prefWidth="110.0"/>
+                        <TableColumn fx:id="actionCol" text="Action" prefWidth="75.0"/>
                     </columns>
                 </TableView>
 
@@ -48,4 +49,3 @@
     </center>
 
 </BorderPane>
-

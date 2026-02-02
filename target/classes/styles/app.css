@@ -272,7 +272,7 @@
 }
 
 /* =========================================================
-   BACK BUTTON (same as mechanic & boss)
+   BACK BUTTON
    ========================================================= */
 
 .btn-back-mech {
@@ -291,6 +291,19 @@
 .btn-back-mech:focused {
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
+}
+
+
+/* =========================================================
+   PROPOSALS - ROW HIGHLIGHT (ACTIVE / INACTIVE)
+   ========================================================= */
+
+.table-row-cell.proposal-active-row {
+    -fx-background-color: rgba(37, 99, 235, 0.12); /* azul suave */
+}
+
+.table-row-cell.proposal-inactive-row {
+    -fx-background-color: rgba(107, 114, 128, 0.06); /* gris suave */
 }
 
 

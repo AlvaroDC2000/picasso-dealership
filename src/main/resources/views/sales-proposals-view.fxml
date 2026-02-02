@@ -40,6 +40,7 @@
                         <TableColumn fx:id="vehicleCol" prefWidth="270.0" text="Vehicle"/>
                         <TableColumn fx:id="customerCol" prefWidth="160.0" text="Customer"/>
                         <TableColumn fx:id="priceCol" prefWidth="100.0" text="Price (€)"/>
+                        <TableColumn fx:id="statusCol" prefWidth="110.0" text="Status"/>
                         <TableColumn fx:id="actionCol" prefWidth="90.0" text="Action"/>
                     </columns>
                 </TableView>
@@ -56,4 +57,5 @@
     </center>
 
 </BorderPane>
+
 

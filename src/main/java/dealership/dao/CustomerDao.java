@@ -55,6 +55,16 @@ public class CustomerDao {
     private static final String SQL_SOFT_DELETE_CUSTOMER_BY_ID =
             "UPDATE customer SET active = 0 WHERE id = ?";
 
+    /**
+     * Loads active customers in a compact id/name format for combo boxes.
+     *
+     * <p>This method is used by the Repairs module when a screen needs to populate
+     * a customer selector. The returned items include a display-friendly text
+     * (typically name plus DNI) mapped into {@link IdName} objects.</p>
+     *
+     * @return a list of customers formatted for combo box usage
+     * @throws Exception if a database access error occurs
+     */
     public List<IdName> findAllCustomersForCombo() throws Exception {
         List<IdName> list = new ArrayList<>();
 
@@ -72,6 +82,16 @@ public class CustomerDao {
         return list;
     }
 
+    /**
+     * Loads all active customers formatted for the Sales module customers table.
+     *
+     * <p>This method retrieves customer records used in the Sales -> Customers list screen
+     * and maps each row into a {@link SalesCustomerRow} instance. Name fields are combined
+     * into a single display value, and optional fields are normalized to avoid blank UI cells.</p>
+     *
+     * @return a list of customers formatted for the Sales customers table
+     * @throws Exception if a database access error occurs
+     */
     public List<SalesCustomerRow> findAllCustomersForSales() throws Exception {
         List<SalesCustomerRow> list = new ArrayList<>();
 
@@ -99,6 +119,17 @@ public class CustomerDao {
         return list;
     }
 
+    /**
+     * Loads the detail information for a single customer by its identifier.
+     *
+     * <p>This method is used by customer detail and edit screens in the Sales module.
+     * It fetches the customer fields from the database and maps them into a
+     * {@link CustomerDetail} model. If the customer does not exist, the method returns {@code null}.</p>
+     *
+     * @param customerId the customer identifier to look up
+     * @return a {@link CustomerDetail} instance if found, or {@code null} if no customer exists for the given id
+     * @throws Exception if a database access error occurs
+     */
     public CustomerDetail findCustomerDetailById(int customerId) throws Exception {
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_FIND_CUSTOMER_DETAIL_BY_ID)) {
@@ -122,6 +153,19 @@ public class CustomerDao {
         }
     }
 
+    /**
+     * Inserts a new customer record into the database.
+     *
+     * <p>This method is used by the Sales module "New Customer" flow.
+     * The inserted customer is created as active by default.</p>
+     *
+     * @param dni the customer's DNI identifier
+     * @param firstName the customer's first name
+     * @param lastName the customer's last name
+     * @param phone the customer's phone number
+     * @param email the customer's email address
+     * @throws Exception if a database access error occurs
+     */
     public void insertCustomer(String dni, String firstName, String lastName, String phone, String email) throws Exception {
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_INSERT_CUSTOMER)) {
@@ -136,6 +180,20 @@ public class CustomerDao {
         }
     }
 
+    /**
+     * Updates an existing customer record with the provided values.
+     *
+     * <p>This method is used by customer edit screens in the Sales module.
+     * It returns whether an update was actually applied (for example, false if the id does not exist).</p>
+     *
+     * @param customerId the customer identifier to update
+     * @param firstName the updated first name
+     * @param lastName the updated last name
+     * @param phone the updated phone number
+     * @param email the updated email address
+     * @return {@code true} if the customer was updated, {@code false} otherwise
+     * @throws Exception if a database access error occurs
+     */
     public boolean updateCustomer(int customerId, String firstName, String lastName, String phone, String email) throws Exception {
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_UPDATE_CUSTOMER)) {
@@ -195,4 +253,3 @@ public class CustomerDao {
         return (value == null || value.isBlank()) ? "-" : value;
     }
 }
-

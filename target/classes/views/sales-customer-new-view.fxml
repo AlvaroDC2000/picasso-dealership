@@ -8,8 +8,12 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="650.0" prefWidth="740.0" styleClass="content-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" 
-			fx:controller="dealership.controllers.SalesCustomerNewController">
+<BorderPane prefHeight="650.0"
+            prefWidth="740.0"
+            styleClass="content-root"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="dealership.controllers.SalesCustomerNewController">
 
     <center>
         <VBox spacing="18.0" style="-fx-padding: 24;">
@@ -23,26 +27,55 @@
             </HBox>
 
             <!-- Form card -->
-            <VBox prefHeight="453.0" prefWidth="692.0" spacing="26.0" style="-fx-background-color: white; -fx-padding: 28;">
+            <VBox prefHeight="453.0"
+                  prefWidth="692.0"
+                  spacing="26.0"
+                  style="-fx-background-color: white; -fx-padding: 28;">
 
+                <!-- Common label width for alignment -->
                 <HBox alignment="CENTER_LEFT" spacing="14.0">
-                    <Label prefHeight="41.0" prefWidth="133.0" style="-fx-font-weight: bold; -fx-font-size: 22;" text="Name:" />
-                    <TextField fx:id="fullNameField" prefHeight="90.0" prefWidth="541.0" promptText="e.g. Laura Gomez" style="-fx-font-size: 20;" HBox.hgrow="ALWAYS" />
+                    <Label prefWidth="160.0"
+                           style="-fx-font-weight: bold; -fx-font-size: 22;"
+                           text="Name:" />
+                    <TextField fx:id="fullNameField"
+                               prefHeight="92.0"
+                               promptText="e.g. Laura Gomez"
+                               style="-fx-font-size: 20;"
+                               HBox.hgrow="ALWAYS" />
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="14.0">
-                    <Label prefHeight="55.0" prefWidth="106.0" style="-fx-font-weight: bold; -fx-font-size: 22;" text="Phone:" />
-                    <TextField fx:id="phoneField" prefHeight="89.0" prefWidth="0.0" promptText="e.g. 622 345 654" style="-fx-font-size: 20;" HBox.hgrow="ALWAYS" />
+                    <Label prefWidth="160.0"
+                           style="-fx-font-weight: bold; -fx-font-size: 22;"
+                           text="Phone:" />
+                    <TextField fx:id="phoneField"
+                               prefHeight="92.0"
+                               promptText="e.g. 622 345 654"
+                               style="-fx-font-size: 20;"
+                               HBox.hgrow="ALWAYS" />
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="14.0">
-                    <Label prefHeight="36.0" prefWidth="146.0" style="-fx-font-weight: bold; -fx-font-size: 22;" text="Email:" />
-                    <TextField fx:id="emailField" prefHeight="92.0" prefWidth="559.0" promptText="e.g. laura@gmail.com" style="-fx-font-size: 20;" HBox.hgrow="ALWAYS" />
+                    <Label prefWidth="160.0"
+                           style="-fx-font-weight: bold; -fx-font-size: 22;"
+                           text="Email:" />
+                    <TextField fx:id="emailField"
+                               prefHeight="92.0"
+                               promptText="e.g. laura@gmail.com"
+                               style="-fx-font-size: 20;"
+                               HBox.hgrow="ALWAYS" />
                 </HBox>
 
+                <!-- Required by DB -->
                 <HBox alignment="CENTER_LEFT" spacing="14.0">
-                    <Label prefHeight="49.0" prefWidth="160.0" style="-fx-font-weight: bold; -fx-font-size: 22;" text="DNI:" />
-                    <TextField fx:id="dniField" prefHeight="92.0" prefWidth="575.0" promptText="e.g. 12345678A" style="-fx-font-size: 20;" HBox.hgrow="ALWAYS" />
+                    <Label prefWidth="160.0"
+                           style="-fx-font-weight: bold; -fx-font-size: 22;"
+                           text="DNI:" />
+                    <TextField fx:id="dniField"
+                               prefHeight="92.0"
+                               promptText="e.g. 12345678A"
+                               style="-fx-font-size: 20;"
+                               HBox.hgrow="ALWAYS" />
                 </HBox>
 
             </VBox>
@@ -50,7 +83,10 @@
             <!-- Bottom right button -->
             <HBox>
                 <Pane HBox.hgrow="ALWAYS" />
-                <Button onAction="#handleCreateCustomer" style="-fx-padding: 16 40;" styleClass="btn-primary" text="Create customer" />
+                <Button text="Create customer"
+                        onAction="#handleCreateCustomer"
+                        styleClass="btn-primary"
+                        style="-fx-padding: 16 40;" />
             </HBox>
 
         </VBox>

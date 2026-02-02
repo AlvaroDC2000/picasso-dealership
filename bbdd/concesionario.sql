@@ -42,7 +42,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (1,'11111111A','Juan','Pérez Gómez','600111111','juan.perez@gmail.com',1),(2,'22222222B','Ana','Martín López','600222222','ana.martin@hotmail.com',1),(3,'33333333C','Carmen','Ruiz Sánchez','600333333','carmen.ruiz@yahoo.es',1),(4,'44444444D','Manuel','García Fernández','600444447','manuel.garcia@gmail.com',0),(5,'55555555E','Lucía','Navarro Torres','600555556','lucia.navarro@outlook.com',1),(6,'66666666F','Sergio','Romero Díaz','600666666','sergio.romero@gmail.com',1),(7,'77777777G','Paula','Molina Herrera','600777777','paula.molina@yahoo.es',1),(8,'88888888H','Javier','Ortega Castillo','600888888','javier.ortega@hotmail.com',1),(9,'12345678Z','Juan','García López','622334655','juangl@gmail.com',1),(11,'03345433R','ggfd','','dfg','dfgdfg@gmail.com',0),(12,'21346587S','Juan','Espada García','654231212','juaneg@gmail.com',0);
+INSERT INTO `customer` VALUES (1,'11111111A','Juan','Pérez Gómez','600111111','juan.perez@gmail.com',1),(2,'22222222B','Ana','Martín López','600222222','ana.martin@hotmail.com',1),(3,'33333333C','Carmen','Ruiz Sánchez','600333333','carmen.ruiz@yahoo.es',1),(4,'44444444D','Manuel','García Fernández','600444447','manuel.garcia@gmail.com',0),(5,'55555555E','Lucía','Navarro Torres','600555556','lucia.navarro@outlook.com',1),(6,'66666666F','Sergio','Romero Díaz','600666666','sergio.romero@gmail.com',1),(7,'77777777G','Paula','Molina Herrera','600777777','paula.molina@yahoo.es',1),(8,'88888888H','Javier','Ortega Castillo','600888888','javier.ortega@hotmail.com',1),(9,'12345678Z','Juan','García Lópe','622334655','juangl@gmail.com',0),(11,'03345433R','ggfd','','dfg','dfgdfg@gmail.com',0),(12,'21346587S','Juan','Espada García','654231212','juaneg@gmail.com',0);
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -99,7 +99,7 @@ CREATE TABLE `repair_order` (
   CONSTRAINT `repair_order_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`),
   CONSTRAINT `repair_order_ibfk_3` FOREIGN KEY (`created_by_boss_id`) REFERENCES `user` (`id`),
   CONSTRAINT `repair_order_ibfk_4` FOREIGN KEY (`assigned_mechanic_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,7 +108,7 @@ CREATE TABLE `repair_order` (
 
 LOCK TABLES `repair_order` WRITE;
 /*!40000 ALTER TABLE `repair_order` DISABLE KEYS */;
-INSERT INTO `repair_order` VALUES (1,3,7,2,4,'FINISHED',NULL,NULL,'2026-01-11 13:25:24','2026-01-11 13:25:25','Oil change'),(2,3,3,2,4,'FINISHED',NULL,NULL,'2026-01-11 23:30:08','2026-01-11 23:30:24','Engine fail'),(3,5,6,2,4,'FINISHED',NULL,NULL,'2026-01-12 10:34:48','2026-02-01 21:14:59','Light fails'),(4,5,5,2,5,'ASSIGNED',NULL,NULL,NULL,NULL,'Engine and oil'),(5,9,6,2,4,'FINISHED',NULL,NULL,'2026-01-12 10:33:43','2026-01-12 10:33:49','Oil and engine'),(6,2,3,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'oil and engine'),(7,3,3,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'break'),(8,22,6,2,4,'IN_PROGRESS',NULL,NULL,'2026-01-25 21:27:57',NULL,'engine'),(9,24,7,2,4,'FINISHED',NULL,NULL,'2026-01-25 20:37:38','2026-01-25 20:37:40','engine'),(10,8,7,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'engine'),(11,3,4,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'oil'),(12,46,5,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'engine'),(13,5,5,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'lights');
+INSERT INTO `repair_order` VALUES (1,3,7,2,4,'FINISHED',NULL,NULL,'2026-01-11 13:25:24','2026-01-11 13:25:25','Oil change'),(2,3,3,2,4,'FINISHED',NULL,NULL,'2026-01-11 23:30:08','2026-01-11 23:30:24','Engine fail'),(3,5,6,2,4,'FINISHED',NULL,NULL,'2026-01-12 10:34:48','2026-02-01 21:14:59','Light fails'),(4,5,5,2,5,'ASSIGNED',NULL,NULL,NULL,NULL,'Engine and oil'),(5,9,6,2,4,'FINISHED',NULL,NULL,'2026-01-12 10:33:43','2026-01-12 10:33:49','Oil and engine'),(6,2,3,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'oil and engine'),(7,3,3,2,10,'ASSIGNED',NULL,NULL,NULL,NULL,'break'),(8,22,6,2,4,'IN_PROGRESS',NULL,NULL,'2026-01-25 21:27:57',NULL,'engine'),(9,24,7,2,4,'FINISHED',NULL,NULL,'2026-01-25 20:37:38','2026-01-25 20:37:40','engine'),(10,8,7,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'engine'),(11,3,4,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'oil'),(12,46,5,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'engine'),(13,5,5,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'lights'),(14,3,3,2,4,'ASSIGNED',NULL,NULL,NULL,NULL,'ffds');
 /*!40000 ALTER TABLE `repair_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -167,7 +167,7 @@ CREATE TABLE `sale` (
   CONSTRAINT `fk_sale_proposal` FOREIGN KEY (`proposal_id`) REFERENCES `sale_proposal` (`id`),
   CONSTRAINT `fk_sale_seller` FOREIGN KEY (`seller_user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `fk_sale_vehicle` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -176,7 +176,7 @@ CREATE TABLE `sale` (
 
 LOCK TABLES `sale` WRITE;
 /*!40000 ALTER TABLE `sale` DISABLE KEYS */;
-INSERT INTO `sale` VALUES (1,1,1,1,12,1,10000.00,'2026-01-25','Car in perfect condition','2026-01-25 17:57:20'),(2,2,2,2,12,1,12000.00,'2026-02-01','Includes 1 year warranty','2026-02-01 20:55:26'),(3,3,3,4,13,2,9000.00,'2026-02-01','Good conditions','2026-02-01 21:18:36');
+INSERT INTO `sale` VALUES (1,1,1,1,12,1,10000.00,'2026-01-25','Car in perfect condition','2026-01-25 17:57:20'),(2,2,2,2,12,1,12000.00,'2026-02-01','Includes 1 year warranty','2026-02-01 20:55:26'),(3,3,3,4,13,2,9000.00,'2026-02-01','Good conditions','2026-02-01 21:18:36'),(4,8,6,25,13,2,12000.00,'2026-02-02','Engine problems','2026-02-02 10:42:04'),(5,9,1,4,13,2,15000.00,'2026-02-02','perfect','2026-02-02 12:08:23'),(6,10,5,3,13,2,13000.00,'2026-02-02','Perfect','2026-02-02 12:24:36');
 /*!40000 ALTER TABLE `sale` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -209,7 +209,7 @@ CREATE TABLE `sale_proposal` (
   CONSTRAINT `fk_sale_proposal_dealership` FOREIGN KEY (`dealership_id`) REFERENCES `dealership` (`id`),
   CONSTRAINT `fk_sale_proposal_seller` FOREIGN KEY (`seller_user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `fk_sale_proposal_vehicle` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -218,7 +218,7 @@ CREATE TABLE `sale_proposal` (
 
 LOCK TABLES `sale_proposal` WRITE;
 /*!40000 ALTER TABLE `sale_proposal` DISABLE KEYS */;
-INSERT INTO `sale_proposal` VALUES (1,1,1,12,1,10000.00,'Car in perfect condition','ACCEPTED','2026-01-25 17:57:20','2026-01-25 17:57:20','2026-02-09'),(2,2,2,12,1,12000.00,'Includes 1 year warranty','ACCEPTED','2026-01-25 17:57:20','2026-02-01 20:55:26','2026-02-09'),(3,3,4,13,2,9000.00,'Good conditions','ACCEPTED','2026-02-01 21:18:01','2026-02-01 21:18:36',NULL),(7,3,6,13,2,18800.00,'Perfect conditions','ACTIVE','2026-02-01 22:43:39',NULL,NULL);
+INSERT INTO `sale_proposal` VALUES (1,1,1,12,1,10000.00,'Car in perfect condition','ACCEPTED','2026-01-25 17:57:20','2026-01-25 17:57:20','2026-02-09'),(2,2,2,12,1,12000.00,'Includes 1 year warranty','ACCEPTED','2026-01-25 17:57:20','2026-02-01 20:55:26','2026-02-09'),(3,3,4,13,2,9000.00,'Good conditions','ACCEPTED','2026-02-01 21:18:01','2026-02-01 21:18:36',NULL),(8,6,25,13,2,12000.00,'Engine problems','ACCEPTED','2026-02-02 10:41:21','2026-02-02 10:42:04',NULL),(9,1,4,13,2,15000.00,'perfect','ACCEPTED','2026-02-02 10:43:14','2026-02-02 12:08:23',NULL),(10,5,3,13,2,13000.00,'Perfect','ACCEPTED','2026-02-02 12:08:15','2026-02-02 12:24:36',NULL),(11,5,6,13,2,8000.00,'Bad conditions','ACTIVE','2026-02-02 12:08:47',NULL,NULL),(12,2,4,13,2,14000.00,'Perfect conditions','ACTIVE','2026-02-02 12:25:11',NULL,NULL);
 /*!40000 ALTER TABLE `sale_proposal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -342,4 +342,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-02-02  0:07:30
+-- Dump completed on 2026-02-02 12:58:20

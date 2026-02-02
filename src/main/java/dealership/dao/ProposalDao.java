@@ -9,13 +9,24 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Access Object (DAO) for sales proposals in the dealership application.
+ *
+ * <p>This class encapsulates all database operations related to the {@code sale_proposal}
+ * table, including listing proposals for the Sales module, loading a proposal detail,
+ * inserting new proposals, updating existing ones, and enforcing safe deletion rules.</p>
+ *
+ * <p>It also provides small helper methods to normalize database values into
+ * UI-friendly strings (for example, avoiding blank values and formatting prices).</p>
+ */
 public class ProposalDao {
 
     private static final String SQL_FIND_ALL_PROPOSALS =
             "SELECT sp.id, " +
             "       CONCAT(v.brand, ' ', v.model, ' ', v.color, ' ', v.year) AS vehicle_text, " +
             "       CONCAT(c.first_name, ' ', c.last_name) AS customer_name, " +
-            "       sp.price " +
+            "       sp.price, " +
+            "       sp.status " +
             "FROM sale_proposal sp " +
             "JOIN customer c ON sp.customer_id = c.id " +
             "JOIN vehicle v ON sp.vehicle_id = v.id " +
@@ -45,10 +56,22 @@ public class ProposalDao {
     private static final String SQL_SET_STATUS =
             "UPDATE sale_proposal SET status = ? WHERE id = ?";
 
-    // IMPORTANT: check if proposal is referenced by sale
     private static final String SQL_EXISTS_SALE_BY_PROPOSAL =
             "SELECT 1 FROM sale s WHERE s.proposal_id = ? LIMIT 1";
 
+    /**
+     * Retrieves all sales proposals in a table-friendly format for the Sales module.
+     *
+     * <p>This method executes a query that joins proposals with customer and vehicle data,
+     * then maps each database row into a {@link SalesProposalRow} instance suitable for
+     * JavaFX {@code TableView} rendering.</p>
+     *
+     * <p>The proposal code is derived from the proposal ID and padded for display.
+     * Some values are normalized to avoid null/blank rendering in the UI.</p>
+     *
+     * @return a list of proposal rows for display in the Sales proposals list screen
+     * @throws Exception if a database access error occurs
+     */
     public List<SalesProposalRow> findAllProposalsForSales() throws Exception {
         List<SalesProposalRow> list = new ArrayList<>();
 
@@ -62,13 +85,15 @@ public class ProposalDao {
                 String vehicle = rs.getString("vehicle_text");
                 String customer = rs.getString("customer_name");
                 BigDecimal price = rs.getBigDecimal("price");
+                String status = rs.getString("status");
 
                 list.add(new SalesProposalRow(
                         id,
                         code,
                         safeText(vehicle),
                         safeText(customer),
-                        formatPrice(price)
+                        formatPrice(price),
+                        safeText(status)
                 ));
             }
         }
@@ -76,6 +101,17 @@ public class ProposalDao {
         return list;
     }
 
+    /**
+     * Loads a single proposal in detail by its identifier.
+     *
+     * <p>This method is used by the proposal detail screen. It fetches the proposal data
+     * together with the associated customer and vehicle display text, and maps it into
+     * a {@link ProposalDetail} model.</p>
+     *
+     * @param proposalId the proposal identifier to look up
+     * @return a {@link ProposalDetail} instance if found, or {@code null} if the proposal does not exist
+     * @throws Exception if a database access error occurs
+     */
     public ProposalDetail findProposalDetailById(int proposalId) throws Exception {
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_FIND_PROPOSAL_DETAIL)) {
@@ -108,6 +144,21 @@ public class ProposalDao {
         }
     }
 
+    /**
+     * Inserts a new sales proposal into the database.
+     *
+     * <p>This method is typically called from the Sales "New Proposal" flow.
+     * The proposal is created with an initial {@code ACTIVE} status as defined
+     * in the insert statement.</p>
+     *
+     * @param customerId the customer associated with the proposal
+     * @param vehicleId the vehicle included in the proposal
+     * @param sellerUserId the seller user creating the proposal
+     * @param dealershipId the dealership where the proposal is created
+     * @param price the proposed price for the vehicle
+     * @param notes optional notes for the proposal (stored as null when blank)
+     * @throws Exception if a database access error occurs
+     */
     public void insertProposal(int customerId, int vehicleId, int sellerUserId, int dealershipId,
                                BigDecimal price, String notes) throws Exception {
         try (Connection conn = DbConnection.getConnection();
@@ -124,6 +175,18 @@ public class ProposalDao {
         }
     }
 
+    /**
+     * Updates price, notes, and status for an existing proposal.
+     *
+     * <p>This method supports the proposal detail/edit flow in the Sales module,
+     * allowing the application to persist user changes back to the database.</p>
+     *
+     * @param proposalId the proposal identifier to update
+     * @param price the new proposal price
+     * @param notes the updated notes (stored as null when blank)
+     * @param status the new proposal status
+     * @throws Exception if a database access error occurs
+     */
     public void updateProposal(int proposalId, BigDecimal price, String notes, String status) throws Exception {
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_UPDATE_PROPOSAL)) {
@@ -137,6 +200,16 @@ public class ProposalDao {
         }
     }
 
+    /**
+     * Updates only the status of a proposal.
+     *
+     * <p>This is used when the Sales module needs to quickly toggle or set
+     * the proposal state without modifying price or notes.</p>
+     *
+     * @param proposalId the proposal identifier to update
+     * @param status the status value to store
+     * @throws Exception if a database access error occurs
+     */
     public void setProposalStatus(int proposalId, String status) throws Exception {
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_SET_STATUS)) {
@@ -148,6 +221,16 @@ public class ProposalDao {
         }
     }
 
+    /**
+     * Checks whether a proposal has already been converted into a sale.
+     *
+     * <p>This method is used to enforce deletion rules and prevent removing
+     * proposals that are already referenced by a row in the {@code sale} table.</p>
+     *
+     * @param proposalId the proposal identifier to check
+     * @return {@code true} if a sale exists for the given proposal, otherwise {@code false}
+     * @throws Exception if a database access error occurs
+     */
     public boolean isProposalAlreadySold(int proposalId) throws Exception {
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_EXISTS_SALE_BY_PROPOSAL)) {
@@ -191,9 +274,6 @@ public class ProposalDao {
 
     /**
      * Converts an optional text into null if it is empty.
-     * <p>
-     * This is used for notes fields so the database stores NULL instead of "".
-     * </p>
      *
      * @param v raw string (can be null)
      * @return null if empty/blank, otherwise trimmed value
@@ -206,9 +286,6 @@ public class ProposalDao {
 
     /**
      * Formats a BigDecimal price for UI display.
-     * <p>
-     * It removes trailing zeros (ex: 12000.00 -> 12000) and returns "-" if null.
-     * </p>
      *
      * @param price price value from database
      * @return formatted price string for tables
@@ -218,4 +295,3 @@ public class ProposalDao {
         return price.stripTrailingZeros().toPlainString();
     }
 }
-
